@@ -9,6 +9,8 @@ export * from "./src/main/ets/attribute/ColumnAttribute";
 
 export * from "./src/main/ets/attribute/RowAttribute";
 
+export * from "./src/main/ets/attribute/CommonAttribute";
+
 export * from "./src/main/ets/component/Column";
 
 export * from "./src/main/ets/component/Row";

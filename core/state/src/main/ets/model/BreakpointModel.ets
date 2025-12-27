@@ -39,3 +39,28 @@ export interface BreakpointRule {
    */
   maxWidthVp: number;
 }
+
+/**
+ * 断点值配置
+ */
+export interface BreakpointValueOptions<T> {
+  /**
+   * 超小断点
+   */
+  xs?: T;
+
+  /**
+   * 小断点
+   */
+  sm?: T;
+
+  /**
+   * 中断点
+   */
+  md?: T;
+
+  /**
+   * 大断点
+   */
+  lg?: T;
+}

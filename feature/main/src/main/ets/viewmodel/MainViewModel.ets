@@ -1,21 +1,6 @@
 import { LottieController } from "@ohos/lottie-turbo";
 import { BaseViewModel } from "base";
-
-/**
- * @file 主页面 ViewModel
- * @author Joker.X
- */
-export interface IMainTabItem {
-  /**
-   * 文本标题
-   */
-  title: string;
-
-  /**
-   * 动画资源
-   */
-  animation: Resource;
-}
+import { MainTabItem } from "../model/MainTabItem";
 
 /**
  * @file 主页面 ViewModel
@@ -31,11 +16,11 @@ export default class MainViewModel extends BaseViewModel {
   /**
    * 底部 Tab 配置
    */
-  readonly tabItems: Array<IMainTabItem> = [
-    { title: "首页", animation: $rawfile("home.json") },
-    { title: "分类", animation: $rawfile("category.json") },
-    { title: "购物车", animation: $rawfile("cart.json") },
-    { title: "我的", animation: $rawfile("me.json") }
+  readonly tabItems: Array<MainTabItem> = [
+    { title: $r("app.string.home"), animation: $rawfile("home.json") },
+    { title: $r("app.string.category"), animation: $rawfile("category.json") },
+    { title: $r("app.string.cart"), animation: $rawfile("cart.json") },
+    { title: $r("app.string.me"), animation: $rawfile("me.json") }
   ];
   /**
    * 每个 Tab 对应的 Lottie 控制器

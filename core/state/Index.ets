@@ -8,7 +8,10 @@ export {
 } from "./src/main/ets/UserState";
 
 export {
-  BREAKPOINT_STATE_KEY, BreakpointState, getBreakpointState
+  BREAKPOINT_STATE_KEY,
+  BreakpointState,
+  getBreakpointState,
+  bp
 } from "./src/main/ets/BreakpointState";
 
 export {
@@ -18,7 +21,9 @@ export {
 } from "./src/main/ets/WindowSafeAreaState";
 
 export {
-  BreakpointType, type BreakpointRule
+  BreakpointType,
+  type BreakpointRule,
+  type BreakpointValueOptions
 } from "./src/main/ets/model/BreakpointModel";
 
 export {

@@ -1,11 +1,14 @@
 import { LottieView } from "@ohos/lottie-turbo";
 import { AppNavDestination } from "ui";
-import MainViewModel, { IMainTabItem } from "../viewmodel/MainViewModel";
+import MainViewModel from "../viewmodel/MainViewModel";
 import { HomePage } from "./HomePage";
 import { CategoryPage } from "./CategoryPage";
 import { CartPage } from "./CartPage";
 import { MePage } from "./MePage";
-import { P100 } from "designsystem";
+import { ColumnCenter, P100, size, SpaceVerticalXSmall } from "designsystem";
+import {
+  bp, BreakpointState, getBreakpointState, getWindowSafeAreaState, WindowSafeAreaState
+} from "state";
 
 /**
  * @file 主页面视图
@@ -18,6 +21,16 @@ export struct MainPage {
    */
   @Local
   private vm: MainViewModel = new MainViewModel();
+  /**
+   * 窗口安全区状态
+   */
+  @Local
+  private windowSafeAreaState: WindowSafeAreaState = getWindowSafeAreaState();
+  /**
+   * 屏幕断点状态
+   */
+  @Local
+  private breakpointState: BreakpointState = getBreakpointState();
 
   /**
    * 构建主页面
@@ -26,7 +39,8 @@ export struct MainPage {
   build() {
     AppNavDestination({
       hideTitleBar: true,
-      viewModel: this.vm
+      viewModel: this.vm,
+      safeAreaEnabled: false
     }) {
       this.MainContent();
     }
@@ -40,82 +54,74 @@ export struct MainPage {
   private MainContent() {
     Tabs({
       index: this.vm.currentPageIndex,
-      barPosition: BarPosition.End
+      barPosition: this.breakpointState.isLG() ? BarPosition.Start : BarPosition.End
     }) {
-      ForEach(this.vm.tabItems, (tabItem: IMainTabItem, index: number) => {
-        TabContent() {
-          this.renderTabContent(index);
-        }
-        .tabBar(this.renderTabBar(tabItem, index));
-      }, (_: IMainTabItem, index: number) => index.toString());
+      TabContent() {
+        HomePage();
+      }.tabBar(this.tabBarItem(0));
+
+      TabContent() {
+        CategoryPage();
+      }.tabBar(this.tabBarItem(1));
+
+      TabContent() {
+        CartPage();
+      }.tabBar(this.tabBarItem(2));
+
+      TabContent() {
+        MePage();
+      }.tabBar(this.tabBarItem(3));
     }
+    .width(P100)
+    .height(P100)
+    .barWidth(this.breakpointState.isLG() ? 96 : P100)
+    .divider({ strokeWidth: 1, color: $r('app.color.border') })
+    .backgroundColor($r("app.color.bg_white"))
     .cachedMaxCount(this.vm.tabItems.length, TabsCacheMode.CACHE_BOTH_SIDE)
     .barMode(BarMode.Fixed)
     .scrollable(true)
-    .width(P100)
-    .height(P100)
-    .onChange((index: number) => {
-      this.vm.updateCurrentPage(index);
-    })
-    .onAnimationStart((index: number, targetIndex: number, event: TabsAnimationEvent) => {
+    .vertical(this.breakpointState.isLG())
+    .onChange((index: number) => this.vm.updateCurrentPage(index))
+    .onAnimationStart((_, targetIndex: number) => {
       this.vm.playSelectedAnimation(targetIndex);
-    });
+    })
+    .padding({ bottom: this.windowSafeAreaState.bottomInset });
   }
 
   /**
-   * 渲染 Tabs 的底部导航项
-   * @param {IMainTabItem} item - Tab 配置
+   * Tabs 的底部导航项
    * @param {number} index - 索引
    * @returns {void} 无返回值
    */
   @Builder
-  private renderTabBar(item: IMainTabItem, index: number) {
-    Column() {
+  private tabBarItem(index: number) {
+    ColumnCenter() {
       LottieView({
         lottieId: `main_tab_${index}`,
         loop: false,
         autoplay: this.vm.currentPageIndex === index,
         controller: this.vm.lottieControllers[index],
-        path: item.animation
+        path: this.vm.tabItems[index].animation
       })
-        .width(32)
-        .height(32)
-        .onAppear(() => {
-          this.vm.handleTabAppear(index);
-        });
+        .attributeModifier(size(bp({
+          sm: 24,
+          md: 28,
+          lg: 32,
+        })))
+        .onAppear(() => this.vm.handleTabAppear(index));
 
-      Text(item.title)
-        .fontSize(12)
-        .fontColor(this.vm.currentPageIndex === index ? Color.Black : Color.Gray)
-        .margin({ top: 4 });
-    }
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center)
-    .padding({ top: 6, bottom: 8 })
-    .layoutWeight(1);
-  }
+      SpaceVerticalXSmall();
 
-  /**
-   * 渲染当前页面内容
-   * @param {number} index - 页面索引
-   * @returns {void} 无返回值
-   */
-  @Builder
-  private renderTabContent(index: number) {
-    Column() {
-      if (index === 0) {
-        HomePage();
-      } else if (index === 1) {
-        CategoryPage();
-      } else if (index === 2) {
-        CartPage();
-      } else {
-        MePage();
-      }
-    }
-    .width(P100)
-    .height(P100)
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center);
+      Text(this.vm.tabItems[index].title)
+        .fontSize(bp({
+          sm: $r("app.float.body_medium"),
+          md: $r("app.float.body_large"),
+          lg: $r("app.float.headline_large")
+        }))
+        .fontColor(this.vm.currentPageIndex === index ?
+          $r("app.color.primary") :
+          $r("app.color.text_subtitle"))
+        .textAlign(TextAlign.Center);
+    };
   }
 }
