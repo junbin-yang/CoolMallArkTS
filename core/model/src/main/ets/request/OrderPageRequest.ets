@@ -14,7 +14,7 @@ export class OrderPageRequest {
   /**
    * 订单状态列表
    */
-  status?: number[] | null = null;
+  status?: number[] | null;
 
   /**
    * @param {Partial<OrderPageRequest>} init - 初始化数据

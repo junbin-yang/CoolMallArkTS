@@ -6,28 +6,31 @@ export class FeedbackSubmitRequest {
   /**
    * 联系方式
    */
-  contact?: string | null = "";
+  contact?: string | null;
   /**
    * 类型
    */
-  type: number = 0;
+  type: number;
   /**
    * 内容
    */
-  content: string = "";
+  content: string;
   /**
    * 图片
    */
-  images?: string[] | null = null;
+  images?: string[] | null;
 
   /**
-   * @param {Partial<FeedbackSubmitRequest>} init - 初始化数据
+   * @param {FeedbackSubmitRequest} init - 初始化数据
    */
-  constructor(init?: Partial<FeedbackSubmitRequest>) {
-    if (!init) return;
-    this.contact = init.contact ?? this.contact;
-    this.type = init.type ?? this.type;
-    this.content = init.content ?? this.content;
-    this.images = init.images ?? this.images;
+  constructor(init: FeedbackSubmitRequest) {
+    this.type = init.type;
+    this.content = init.content;
+    if (init.contact !== undefined) {
+      this.contact = init.contact;
+    }
+    if (init.images !== undefined) {
+      this.images = init.images;
+    }
   }
 }

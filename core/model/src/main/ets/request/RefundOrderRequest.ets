@@ -6,18 +6,17 @@ export class RefundOrderRequest {
   /**
    * 订单ID
    */
-  orderId: number = 0;
+  orderId: number;
   /**
    * 退款原因
    */
-  reason: string = "";
+  reason: string;
 
   /**
-   * @param {Partial<RefundOrderRequest>} init - 初始化数据
+   * @param {RefundOrderRequest} init - 初始化数据
    */
-  constructor(init?: Partial<RefundOrderRequest>) {
-    if (!init) return;
-    this.orderId = init.orderId ?? this.orderId;
-    this.reason = init.reason ?? this.reason;
+  constructor(init: RefundOrderRequest) {
+    this.orderId = init.orderId;
+    this.reason = init.reason;
   }
 }

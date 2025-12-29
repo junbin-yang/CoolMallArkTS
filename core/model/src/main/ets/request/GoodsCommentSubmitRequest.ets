@@ -8,18 +8,17 @@ export class GoodsCommentSubmitRequest {
   /**
    * 订单ID
    */
-  orderId: number = 0;
+  orderId: number;
   /**
    * 评论数据
    */
-  data: Comment = new Comment();
+  data: Comment;
 
   /**
-   * @param {Partial<GoodsCommentSubmitRequest>} init - 初始化数据
+   * @param {GoodsCommentSubmitRequest} init - 初始化数据
    */
-  constructor(init?: Partial<GoodsCommentSubmitRequest>) {
-    if (!init) return;
-    this.orderId = init.orderId ?? this.orderId;
-    this.data = init.data ? new Comment(init.data) : this.data;
+  constructor(init: GoodsCommentSubmitRequest) {
+    this.orderId = init.orderId;
+    this.data = new Comment(init.data);
   }
 }

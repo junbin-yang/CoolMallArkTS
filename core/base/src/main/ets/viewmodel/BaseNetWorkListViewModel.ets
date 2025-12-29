@@ -2,6 +2,7 @@ import { NetworkPageData, NetworkPageMeta, NetworkResponse } from "model";
 import { RequestHelper } from "result";
 import { BaseNetWorkListUiState } from "../state/BaseNetWorkListUiState";
 import { BaseViewModel } from "./BaseViewModel";
+import { JSON } from "@kit.ArkTS";
 
 /**
  * @file 网络列表请求 ViewModel 基类
@@ -99,6 +100,9 @@ export abstract class BaseNetWorkListViewModel<T> extends BaseViewModel {
     }
 
     this.listData = [...this.listData, ...list];
+    console.log("数据量:", this.listData.length);
+    console.log("本次数据:", JSON.stringify(list));
+    console.log("是否还有更多:", hasNextPage);
     this.isEnableSlideUp = hasNextPage;
   }
 
@@ -150,7 +154,7 @@ export abstract class BaseNetWorkListViewModel<T> extends BaseViewModel {
     if (this.isLoading || !this.isEnableSlideUp || this.listData.length === 0) {
       return;
     }
-
+    this.isLoading = true;
     this.currentPage += 1;
     this.loadListData();
   }

@@ -6,13 +6,12 @@ export class DictDataRequest {
   /**
    * 字典类型列表
    */
-  types: string[] = [];
+  types: string[];
 
   /**
-   * @param {Partial<DictDataRequest>} init - 初始化数据
+   * @param {DictDataRequest} init - 初始化数据
    */
-  constructor(init?: Partial<DictDataRequest>) {
-    if (!init) return;
-    this.types = init.types ?? this.types;
+  constructor(init: DictDataRequest) {
+    this.types = init.types;
   }
 }

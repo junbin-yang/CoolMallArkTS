@@ -6,18 +6,17 @@ export class QQLoginRequest {
   /**
    * 访问令牌
    */
-  accessToken: string = "";
+  accessToken: string;
   /**
    * 用户唯一标识
    */
-  openId: string = "";
+  openId: string;
 
   /**
-   * @param {Partial<QQLoginRequest>} init - 初始化数据
+   * @param {QQLoginRequest} init - 初始化数据
    */
-  constructor(init?: Partial<QQLoginRequest>) {
-    if (!init) return;
-    this.accessToken = init.accessToken ?? this.accessToken;
-    this.openId = init.openId ?? this.openId;
+  constructor(init: QQLoginRequest) {
+    this.accessToken = init.accessToken;
+    this.openId = init.openId;
   }
 }

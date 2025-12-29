@@ -1,9 +1,10 @@
-import { AppNavDestination, BaseNetWorkListView, GoodsListItem, RefreshLayout, TitleWithLine } from "ui";
+import { AppNavDestination, BaseNetWorkListView, GoodsGridItem, GoodsListItem, RefreshLayout, TitleWithLine } from "ui";
 import { Goods } from "model";
 import { HomeBanner } from "../component/HomeBanner";
 import { HomeCouponSection } from "../component/HomeCouponSection";
 import { HomeTopBar } from "../component/HomeTopBar";
 import HomeViewModel from "../viewmodel/HomeViewModel";
+import { P100, SpaceVerticalSmall } from "designsystem";
 
 /**
  * @file 首页视图
@@ -61,24 +62,43 @@ export struct HomePage {
         }
 
         ListItem() {
-          TitleWithLine({ text: $r("app.string.recommend_goods") })
+          TitleWithLine({ text: $r("app.string.recommend_goods") });
         }
 
-        if (this.vm.pageData.recommend && this.vm.pageData.recommend.length > 0) {
-          ForEach(this.vm.pageData.recommend as Goods[], (item: Goods): void => {
-            ListItem() {
-              GoodsListItem({
-                goods: item,
-                onItemClick: (_id: number): void => {
-                }
-              });
-            }
-          });
+        ForEach(this.vm.pageData.recommend, (item: Goods): void => {
+          ListItem() {
+            GoodsListItem({
+              goods: item,
+              onItemClick: (_id: number): void => {
+              }
+            });
+          }
+        });
+
+        ListItem() {
+          TitleWithLine({ text: $r("app.string.all_goods") });
         }
 
         ListItem() {
-          TitleWithLine({ text: $r("app.string.all_goods") })
+          Grid() {
+            ForEach(this.vm.listData, (item: Goods): void => {
+              GridItem() {
+                GoodsGridItem({
+                  goods: item,
+                  onItemClick: (_id: number): void => {
+                  }
+                });
+              }
+            }, (item: Goods): string => `${item.id}`);
+          }
+          .columnsTemplate("1fr 1fr")
+          .columnsGap($r("app.float.space_padding_small"))
+          .rowsGap($r("app.float.space_padding_small"))
+          .width(P100);
         }
+
+        SpaceVerticalSmall()
+
       }.padding($r("app.float.space_padding_medium"));
     }
   }

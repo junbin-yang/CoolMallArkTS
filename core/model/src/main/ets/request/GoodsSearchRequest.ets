@@ -14,35 +14,35 @@ export class GoodsSearchRequest {
   /**
    * 商品分类ID列表
    */
-  typeId?: number[] | null = null;
+  typeId?: number[] | null;
   /**
    * 最低价格
    */
-  minPrice?: string | null = null;
+  minPrice?: string | null;
   /**
    * 最高价格
    */
-  maxPrice?: string | null = null;
+  maxPrice?: string | null;
   /**
    * 搜索关键词
    */
-  keyWord?: string | null = null;
+  keyWord?: string | null;
   /**
    * 排序字段
    */
-  order?: string | null = null;
+  order?: string | null;
   /**
    * 排序方式
    */
-  sort?: string | null = null;
+  sort?: string | null;
   /**
    * 推荐
    */
-  recommend: boolean = false;
+  recommend?: boolean;
   /**
    * 精选
    */
-  featured: boolean = false;
+  featured?: boolean;
 
   /**
    * @param {Partial<GoodsSearchRequest>} init - 初始化数据

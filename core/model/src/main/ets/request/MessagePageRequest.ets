@@ -6,7 +6,7 @@ export class MessagePageRequest {
   /**
    * 会话ID
    */
-  sessionId: number = 0;
+  sessionId?: number;
   /**
    * 页码
    */

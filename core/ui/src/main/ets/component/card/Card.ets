@@ -7,6 +7,16 @@ import { P100 } from "designsystem";
 @ComponentV2
 export struct Card {
   /**
+   * 宽度
+   */
+  @Param
+  widthValue: Length | undefined = P100;
+  /**
+   * 高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
    * 背景色
    */
   @Param
@@ -44,7 +54,8 @@ export struct Card {
         this.content();
       }
     }
-    .width(P100)
+    .width(this.widthValue)
+    .height(this.heightValue)
     .padding(this.paddingValue)
     .backgroundColor(this.bgColor)
     .borderRadius(this.radiusValue)
