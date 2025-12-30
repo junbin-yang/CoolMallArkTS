@@ -1,10 +1,13 @@
 import { AppNavDestination, BaseNetWorkListView, GoodsGridItem, GoodsListItem, RefreshLayout, TitleWithLine } from "ui";
 import { Goods } from "model";
 import { HomeBanner } from "../component/HomeBanner";
+import { HomeCategorySection } from "../component/HomeCategorySection";
 import { HomeCouponSection } from "../component/HomeCouponSection";
+import { HomeFlashSaleSection } from "../component/HomeFlashSaleSection";
 import { HomeTopBar } from "../component/HomeTopBar";
 import HomeViewModel from "../viewmodel/HomeViewModel";
 import { P100, SpaceVerticalSmall } from "designsystem";
+import { bp } from "state";
 
 /**
  * @file 首页视图
@@ -62,18 +65,34 @@ export struct HomePage {
         }
 
         ListItem() {
+          HomeCategorySection({ categories: this.vm.pageData.category ?? [] });
+        }
+
+        ListItem() {
+          HomeFlashSaleSection({ goodsList: this.vm.pageData.flashSale ?? [] });
+        }
+
+        ListItem() {
           TitleWithLine({ text: $r("app.string.recommend_goods") });
         }
 
-        ForEach(this.vm.pageData.recommend, (item: Goods): void => {
-          ListItem() {
-            GoodsListItem({
-              goods: item,
-              onItemClick: (_id: number): void => {
+        ListItem() {
+          Grid() {
+            ForEach(this.vm.pageData.recommend ?? [], (item: Goods): void => {
+              GridItem() {
+                GoodsListItem({
+                  goods: item,
+                  onItemClick: (_id: number): void => {
+                  }
+                });
               }
-            });
+            }, (item: Goods): string => `${item.id}`);
           }
-        });
+          .columnsTemplate(bp({ sm: "1fr", md: "1fr 1fr", lg: "1fr 1fr" }))
+          .columnsGap($r("app.float.space_padding_small"))
+          .rowsGap($r("app.float.space_padding_small"))
+          .width(P100);
+        }
 
         ListItem() {
           TitleWithLine({ text: $r("app.string.all_goods") });
@@ -91,7 +110,7 @@ export struct HomePage {
               }
             }, (item: Goods): string => `${item.id}`);
           }
-          .columnsTemplate("1fr 1fr")
+          .columnsTemplate(bp({ sm: "1fr 1fr", md: "1fr 1fr 1fr", lg: "1fr 1fr 1fr 1fr" }))
           .columnsGap($r("app.float.space_padding_small"))
           .rowsGap($r("app.float.space_padding_small"))
           .width(P100);
