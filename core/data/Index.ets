@@ -19,6 +19,8 @@ export { CustomerServiceRepository } from './src/main/ets/repository/CustomerSer
 
 export { FeedbackRepository } from './src/main/ets/repository/FeedbackRepository';
 
+export { FootprintRepository } from './src/main/ets/repository/FootprintRepository';
+
 export { OrderRepository } from './src/main/ets/repository/OrderRepository';
 
 export { PageRepository } from './src/main/ets/repository/PageRepository';

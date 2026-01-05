@@ -1,6 +1,6 @@
 import { ColumnStart, P100, SpaceVerticalSmall } from "designsystem";
 import { Goods } from "model";
-import { Card, IBestCell, IBestCellGroup } from "ui";
+import { Card, CardTitleCell } from "ui";
 import { FlashSaleItem } from "./FlashSaleItem";
 
 /**
@@ -34,21 +34,12 @@ export struct HomeFlashSaleSection {
   build(): void {
     if (this.goodsList && this.goodsList.length > 0) {
       Card() {
-        IBestCellGroup({
-          inset: true,
-          radius: $r("app.float.radius_medium"),
-          outerMargin: 0
-        }) {
-          IBestCell({
-            leftIcon: $r("app.media.ic_time"),
-            title: $r("app.string.flash_sale"),
-            value: $r("app.string.view_all"),
-            isLink: true,
-            hasBorder: true,
-            borderSizeType: "full",
-            onCellClick: (): void => this.onMoreClick()
-          });
-        }
+        CardTitleCell({
+          leftIcon: $r("app.media.ic_time"),
+          title: $r("app.string.flash_sale"),
+          value: $r("app.string.view_all"),
+          onTap: (): void => this.onMoreClick()
+        });
 
         List({ space: 8 }) {
           ForEach(this.goodsList, (goods: Goods): void => {
