@@ -16,3 +16,5 @@ export * from "./src/main/ets/component/Column";
 export * from "./src/main/ets/component/Row";
 
 export * from "./src/main/ets/component/Spacer";
+
+export * from "./src/main/ets/component/Scroll";

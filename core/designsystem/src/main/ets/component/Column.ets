@@ -460,6 +460,166 @@ export struct ColumnSpaceBetween {
 }
 
 /**
+ * 纵向环绕分布 + 水平居中
+ */
+@ComponentV2
+export struct ColumnSpaceAround {
+  /**
+   * Column 构造参数
+   */
+  @Param
+  options: ColumnOptions | ColumnOptionsV2 = {};
+  /**
+   * 宽度
+   */
+  @Param
+  widthValue: Length | undefined = undefined;
+  /**
+   * 高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
+   * 尺寸（对应官方 size 属性）
+   */
+  @Param
+  sizeValue: SizeOptions | undefined = undefined;
+  /**
+   * 内边距
+   */
+  @Param
+  paddingValue: Padding | Length | LocalizedPadding | undefined = undefined;
+  /**
+   * 外边距
+   */
+  @Param
+  marginValue: Margin | Length | LocalizedMargin | undefined = undefined;
+  /**
+   * 是否填充最大宽高
+   */
+  @Param
+  fillMaxSize: boolean = false;
+  /**
+   * 背景颜色
+   */
+  @Param
+  bgColor: ResourceColor | undefined = undefined;
+  /**
+   * 点击事件
+   */
+  @Param
+  onTap: ((event: ClickEvent) => void) | undefined = undefined;
+  /**
+   * 内容构建函数
+   */
+  @BuilderParam
+  content: CustomBuilder;
+
+  /**
+   * 渲染布局
+   * @returns {void} 无返回值
+   * @example
+  * ColumnSpaceAround() { Text("A"); Text("B"); Text("C"); }
+   */
+  build(): void {
+    ColumnBase({
+      options: this.options,
+      justifyContent: FlexAlign.SpaceAround,
+      alignItems: HorizontalAlign.Center,
+      widthValue: this.widthValue,
+      heightValue: this.heightValue,
+      sizeValue: this.sizeValue,
+      paddingValue: this.paddingValue,
+      marginValue: this.marginValue,
+      fillMaxSize: this.fillMaxSize,
+      bgColor: this.bgColor,
+      onTap: this.onTap,
+      content: this.content
+    });
+  }
+}
+
+/**
+ * 纵向均分 + 水平居中
+ */
+@ComponentV2
+export struct ColumnSpaceEvenly {
+  /**
+   * Column 构造参数
+   */
+  @Param
+  options: ColumnOptions | ColumnOptionsV2 = {};
+  /**
+   * 宽度
+   */
+  @Param
+  widthValue: Length | undefined = undefined;
+  /**
+   * 高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
+   * 尺寸（对应官方 size 属性）
+   */
+  @Param
+  sizeValue: SizeOptions | undefined = undefined;
+  /**
+   * 内边距
+   */
+  @Param
+  paddingValue: Padding | Length | LocalizedPadding | undefined = undefined;
+  /**
+   * 外边距
+   */
+  @Param
+  marginValue: Margin | Length | LocalizedMargin | undefined = undefined;
+  /**
+   * 是否填充最大宽高
+   */
+  @Param
+  fillMaxSize: boolean = false;
+  /**
+   * 背景颜色
+   */
+  @Param
+  bgColor: ResourceColor | undefined = undefined;
+  /**
+   * 点击事件
+   */
+  @Param
+  onTap: ((event: ClickEvent) => void) | undefined = undefined;
+  /**
+   * 内容构建函数
+   */
+  @BuilderParam
+  content: CustomBuilder;
+
+  /**
+   * 渲染布局
+   * @returns {void} 无返回值
+   * @example
+  * ColumnSpaceEvenly() { Text("A"); Text("B"); Text("C"); }
+   */
+  build(): void {
+    ColumnBase({
+      options: this.options,
+      justifyContent: FlexAlign.SpaceEvenly,
+      alignItems: HorizontalAlign.Center,
+      widthValue: this.widthValue,
+      heightValue: this.heightValue,
+      sizeValue: this.sizeValue,
+      paddingValue: this.paddingValue,
+      marginValue: this.marginValue,
+      fillMaxSize: this.fillMaxSize,
+      bgColor: this.bgColor,
+      onTap: this.onTap,
+      content: this.content
+    });
+  }
+}
+
+/**
  * 纵向居中 + 水平起始
  */
 @ComponentV2
@@ -925,6 +1085,326 @@ export struct ColumnSpaceBetweenEnd {
     ColumnBase({
       options: this.options,
       justifyContent: FlexAlign.SpaceBetween,
+      alignItems: HorizontalAlign.End,
+      widthValue: this.widthValue,
+      heightValue: this.heightValue,
+      sizeValue: this.sizeValue,
+      paddingValue: this.paddingValue,
+      marginValue: this.marginValue,
+      fillMaxSize: this.fillMaxSize,
+      bgColor: this.bgColor,
+      onTap: this.onTap,
+      content: this.content
+    });
+  }
+}
+
+/**
+ * 纵向环绕分布 + 水平起始
+ */
+@ComponentV2
+export struct ColumnSpaceAroundStart {
+  /**
+   * Column 构造参数
+   */
+  @Param
+  options: ColumnOptions | ColumnOptionsV2 = {};
+  /**
+   * 宽度
+   */
+  @Param
+  widthValue: Length | undefined = undefined;
+  /**
+   * 高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
+   * 尺寸（对应官方 size 属性）
+   */
+  @Param
+  sizeValue: SizeOptions | undefined = undefined;
+  /**
+   * 内边距
+   */
+  @Param
+  paddingValue: Padding | Length | LocalizedPadding | undefined = undefined;
+  /**
+   * 外边距
+   */
+  @Param
+  marginValue: Margin | Length | LocalizedMargin | undefined = undefined;
+  /**
+   * 是否填充最大宽高
+   */
+  @Param
+  fillMaxSize: boolean = false;
+  /**
+   * 背景颜色
+   */
+  @Param
+  bgColor: ResourceColor | undefined = undefined;
+  /**
+   * 点击事件
+   */
+  @Param
+  onTap: ((event: ClickEvent) => void) | undefined = undefined;
+  /**
+   * 内容构建函数
+   */
+  @BuilderParam
+  content: CustomBuilder;
+
+  /**
+   * 渲染布局
+   * @returns {void} 无返回值
+   * @example
+  * ColumnSpaceAroundStart() { Text("A"); Text("B"); Text("C"); }
+   */
+  build(): void {
+    ColumnBase({
+      options: this.options,
+      justifyContent: FlexAlign.SpaceAround,
+      alignItems: HorizontalAlign.Start,
+      widthValue: this.widthValue,
+      heightValue: this.heightValue,
+      sizeValue: this.sizeValue,
+      paddingValue: this.paddingValue,
+      marginValue: this.marginValue,
+      fillMaxSize: this.fillMaxSize,
+      bgColor: this.bgColor,
+      onTap: this.onTap,
+      content: this.content
+    });
+  }
+}
+
+/**
+ * 纵向环绕分布 + 水平末尾
+ */
+@ComponentV2
+export struct ColumnSpaceAroundEnd {
+  /**
+   * Column 构造参数
+   */
+  @Param
+  options: ColumnOptions | ColumnOptionsV2 = {};
+  /**
+   * 宽度
+   */
+  @Param
+  widthValue: Length | undefined = undefined;
+  /**
+   * 高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
+   * 尺寸（对应官方 size 属性）
+   */
+  @Param
+  sizeValue: SizeOptions | undefined = undefined;
+  /**
+   * 内边距
+   */
+  @Param
+  paddingValue: Padding | Length | LocalizedPadding | undefined = undefined;
+  /**
+   * 外边距
+   */
+  @Param
+  marginValue: Margin | Length | LocalizedMargin | undefined = undefined;
+  /**
+   * 是否填充最大宽高
+   */
+  @Param
+  fillMaxSize: boolean = false;
+  /**
+   * 背景颜色
+   */
+  @Param
+  bgColor: ResourceColor | undefined = undefined;
+  /**
+   * 点击事件
+   */
+  @Param
+  onTap: ((event: ClickEvent) => void) | undefined = undefined;
+  /**
+   * 内容构建函数
+   */
+  @BuilderParam
+  content: CustomBuilder;
+
+  /**
+   * 渲染布局
+   * @returns {void} 无返回值
+   * @example
+  * ColumnSpaceAroundEnd() { Text("A"); Text("B"); Text("C"); }
+   */
+  build(): void {
+    ColumnBase({
+      options: this.options,
+      justifyContent: FlexAlign.SpaceAround,
+      alignItems: HorizontalAlign.End,
+      widthValue: this.widthValue,
+      heightValue: this.heightValue,
+      sizeValue: this.sizeValue,
+      paddingValue: this.paddingValue,
+      marginValue: this.marginValue,
+      fillMaxSize: this.fillMaxSize,
+      bgColor: this.bgColor,
+      onTap: this.onTap,
+      content: this.content
+    });
+  }
+}
+
+/**
+ * 纵向均分 + 水平起始
+ */
+@ComponentV2
+export struct ColumnSpaceEvenlyStart {
+  /**
+   * Column 构造参数
+   */
+  @Param
+  options: ColumnOptions | ColumnOptionsV2 = {};
+  /**
+   * 宽度
+   */
+  @Param
+  widthValue: Length | undefined = undefined;
+  /**
+   * 高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
+   * 尺寸（对应官方 size 属性）
+   */
+  @Param
+  sizeValue: SizeOptions | undefined = undefined;
+  /**
+   * 内边距
+   */
+  @Param
+  paddingValue: Padding | Length | LocalizedPadding | undefined = undefined;
+  /**
+   * 外边距
+   */
+  @Param
+  marginValue: Margin | Length | LocalizedMargin | undefined = undefined;
+  /**
+   * 是否填充最大宽高
+   */
+  @Param
+  fillMaxSize: boolean = false;
+  /**
+   * 背景颜色
+   */
+  @Param
+  bgColor: ResourceColor | undefined = undefined;
+  /**
+   * 点击事件
+   */
+  @Param
+  onTap: ((event: ClickEvent) => void) | undefined = undefined;
+  /**
+   * 内容构建函数
+   */
+  @BuilderParam
+  content: CustomBuilder;
+
+  /**
+   * 渲染布局
+   * @returns {void} 无返回值
+   * @example
+  * ColumnSpaceEvenlyStart() { Text("A"); Text("B"); Text("C"); }
+   */
+  build(): void {
+    ColumnBase({
+      options: this.options,
+      justifyContent: FlexAlign.SpaceEvenly,
+      alignItems: HorizontalAlign.Start,
+      widthValue: this.widthValue,
+      heightValue: this.heightValue,
+      sizeValue: this.sizeValue,
+      paddingValue: this.paddingValue,
+      marginValue: this.marginValue,
+      fillMaxSize: this.fillMaxSize,
+      bgColor: this.bgColor,
+      onTap: this.onTap,
+      content: this.content
+    });
+  }
+}
+
+/**
+ * 纵向均分 + 水平末尾
+ */
+@ComponentV2
+export struct ColumnSpaceEvenlyEnd {
+  /**
+   * Column 构造参数
+   */
+  @Param
+  options: ColumnOptions | ColumnOptionsV2 = {};
+  /**
+   * 宽度
+   */
+  @Param
+  widthValue: Length | undefined = undefined;
+  /**
+   * 高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
+   * 尺寸（对应官方 size 属性）
+   */
+  @Param
+  sizeValue: SizeOptions | undefined = undefined;
+  /**
+   * 内边距
+   */
+  @Param
+  paddingValue: Padding | Length | LocalizedPadding | undefined = undefined;
+  /**
+   * 外边距
+   */
+  @Param
+  marginValue: Margin | Length | LocalizedMargin | undefined = undefined;
+  /**
+   * 是否填充最大宽高
+   */
+  @Param
+  fillMaxSize: boolean = false;
+  /**
+   * 背景颜色
+   */
+  @Param
+  bgColor: ResourceColor | undefined = undefined;
+  /**
+   * 点击事件
+   */
+  @Param
+  onTap: ((event: ClickEvent) => void) | undefined = undefined;
+  /**
+   * 内容构建函数
+   */
+  @BuilderParam
+  content: CustomBuilder;
+
+  /**
+   * 渲染布局
+   * @returns {void} 无返回值
+   * @example
+  * ColumnSpaceEvenlyEnd() { Text("A"); Text("B"); Text("C"); }
+   */
+  build(): void {
+    ColumnBase({
+      options: this.options,
+      justifyContent: FlexAlign.SpaceEvenly,
       alignItems: HorizontalAlign.End,
       widthValue: this.widthValue,
       heightValue: this.heightValue,
