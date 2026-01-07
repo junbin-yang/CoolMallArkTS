@@ -1,4 +1,4 @@
-import { IBestButton, IBestEmpty } from "@ibestservices/ibest-ui-v2";
+import { IBestButton, IBestEmpty } from "ibestui";
 import { P100, P70, SpaceVerticalMedium } from "designsystem";
 
 /**

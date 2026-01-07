@@ -9,6 +9,7 @@
     "navigation": "file:../core/navigation",
     "util": "file:../core/util",
     "ui": "file:../core/ui",
+    "ibestui": "file:../core/ibestui",
     "state": "file:../core/state",
     "designsystem": "file:../core/designsystem",
     "main": "file:../feature/main",
@@ -24,4 +25,3 @@
     "launch": "file:../feature/launch",
   }
 }
-

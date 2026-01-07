@@ -1,4 +1,5 @@
-import { ColumnStart, P100, SpaceVerticalXXLarge } from "designsystem";
+import { ColumnStartCenter, LargePaddingVerticalScroll, P100, P60, P70, SpaceVerticalXXLarge } from "designsystem";
+import { bp } from "state";
 
 /**
  * @file 认证页面基础布局组件
@@ -27,29 +28,38 @@ export struct AnimatedAuthPage {
    * @returns {void} 无返回值
    */
   build(): void {
-    ColumnStart({
-      widthValue: P100,
-      fillMaxSize: true,
-      paddingValue: {
-        top: $r("app.float.space_vertical_large_xx"),
-        left: $r("app.float.space_horizontal_large_xx"),
-        right: $r("app.float.space_horizontal_large_xx")
-      }
-    }) {
-      Text(this.title)
-        .fontSize(28)
-        .fontWeight(FontWeight.Medium)
-        .fontColor($r("app.color.text_primary"))
-        .width(P100)
-        .maxLines(2)
-        .textOverflow({ overflow: TextOverflow.Clip })
-        .textAlign(TextAlign.Start);
+    LargePaddingVerticalScroll({ fillMaxSize: true }) {
+      ColumnStartCenter({ widthValue: P100 }) {
+        Column() {
+          Text(this.title)
+            .fontSize(28)
+            .fontWeight(FontWeight.Medium)
+            .fontColor($r("app.color.text_primary"))
+            .width(P100)
+            .maxLines(2)
+            .textOverflow({ overflow: TextOverflow.Clip })
+            .textAlign(TextAlign.Start);
 
-      SpaceVerticalXXLarge();
-      SpaceVerticalXXLarge();
+          SpaceVerticalXXLarge();
+          SpaceVerticalXXLarge();
 
-      if (this.content) {
-        this.content();
+          if (this.content) {
+            this.content();
+          }
+        }
+        .justifyContent(FlexAlign.Start)
+        .alignItems(HorizontalAlign.Start)
+        .width(bp({
+          sm: P100,
+          md: P70,
+          lg: P60
+        }))
+        .constraintSize({ minHeight: P100 })
+        .padding({
+          top: $r("app.float.space_vertical_large_xx"),
+          left: $r("app.float.space_horizontal_medium"),
+          right: $r("app.float.space_horizontal_medium")
+        });
       }
     }
   }

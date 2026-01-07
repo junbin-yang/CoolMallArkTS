@@ -6,6 +6,8 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "model": "file:../model"
+    "model": "file:../model",
+    "ibestui": "file:../ibestui",
+    "util": "file:../util"
   }
 }

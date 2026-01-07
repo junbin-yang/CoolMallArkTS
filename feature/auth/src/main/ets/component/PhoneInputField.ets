@@ -1,5 +1,5 @@
 import { ColumnStart, P100 } from "designsystem";
-import { IBestField, IBestFieldValueType } from "ui";
+import { IBestField, IBestFieldValueType } from "ibestui";
 import { FocusableDivider } from "./FocusableDivider";
 
 /**

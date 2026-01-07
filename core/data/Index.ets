@@ -24,3 +24,9 @@ export { FootprintRepository } from './src/main/ets/repository/FootprintReposito
 export { OrderRepository } from './src/main/ets/repository/OrderRepository';
 
 export { PageRepository } from './src/main/ets/repository/PageRepository';
+
+export { AccountStoreRepository } from './src/main/ets/repository/AccountStoreRepository';
+
+export { UserInfoRepository } from './src/main/ets/repository/UserInfoRepository';
+
+export { TokenStoreRepository } from './src/main/ets/repository/TokenStoreRepository';

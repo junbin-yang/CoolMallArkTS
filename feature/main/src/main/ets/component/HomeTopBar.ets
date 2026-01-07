@@ -1,5 +1,5 @@
 import { P100, SpaceHorizontalSmall, rowCenter, size } from "designsystem";
-import { IBestNavBar } from "ui";
+import { IBestNavBar } from "ibestui";
 
 /**
  * @file 首页顶部标题栏组件

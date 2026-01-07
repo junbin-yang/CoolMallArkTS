@@ -1,5 +1,6 @@
 import { P100, SpaceVerticalMedium, SpaceVerticalSmall, SpaceVerticalXLarge, SpaceVerticalXXLarge } from "designsystem";
-import { AppNavDestination, IBestButton } from "ui";
+import { IBestButton } from "ibestui";
+import { AppNavDestination } from "ui";
 import { AnimatedAuthPage } from "../component/AnimatedAuthPage";
 import { BottomNavigationRow } from "../component/BottomNavigationRow";
 import { PasswordInputField } from "../component/PasswordInputField";
@@ -18,16 +19,6 @@ export struct AccountLoginPage {
    */
   @Local
   private vm: AccountLoginViewModel = new AccountLoginViewModel();
-  /**
-   * 账号输入
-   */
-  @Local
-  private account: string = "";
-  /**
-   * 密码输入
-   */
-  @Local
-  private password: string = "";
 
   /**
    * 构建账号登录页面
@@ -51,9 +42,9 @@ export struct AccountLoginPage {
   private AccountLoginContent(): void {
     AnimatedAuthPage({ title: $r("app.string.welcome_login") }) {
       PhoneInputField({
-        phone: this.account,
+        phone: this.vm.account,
         onPhoneChange: (value: string): void => {
-          this.account = value;
+          this.vm.updateAccount(value);
         }
       });
 
@@ -61,9 +52,9 @@ export struct AccountLoginPage {
       SpaceVerticalSmall();
 
       PasswordInputField({
-        password: this.password,
+        password: this.vm.password,
         onPasswordChange: (value: string): void => {
-          this.password = value;
+          this.vm.updatePassword(value);
         }
       });
 
@@ -71,8 +62,10 @@ export struct AccountLoginPage {
 
       UserAgreement({
         onUserAgreementClick: (): void => {
+          this.vm.onUserAgreementClick();
         },
         onPrivacyPolicyClick: (): void => {
+          this.vm.onPrivacyPolicyClick();
         }
       });
 
@@ -83,8 +76,9 @@ export struct AccountLoginPage {
         type: "primary",
         round: true,
         btnWidth: P100,
-        onBtnClick: (): void => {
-        }
+        loading: this.vm.isLoginLoading,
+        disabled: this.vm.isLoginLoading,
+        onBtnClick: (): void => this.vm.login()
       });
 
       BottomNavigationRow({

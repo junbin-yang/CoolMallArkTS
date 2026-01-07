@@ -1,7 +1,8 @@
 import { ColumnStart, P100, RowStartTop, SpaceVerticalSmall, SpaceVerticalXSmall } from "designsystem";
 import { CategoryTree } from "model";
 import { bp, getWindowSafeAreaState, WindowSafeAreaState } from "state";
-import { AppNavDestination, BaseNetWorkView, IBestSideBar, IBestSideBarItem, NetWorkImage, TitleWithLine } from "ui";
+import { IBestSideBar, IBestSideBarItem } from "ibestui";
+import { AppNavDestination, BaseNetWorkView, NetWorkImage, TitleWithLine } from "ui";
 import CategoryViewModel from "../viewmodel/CategoryViewModel";
 
 /**

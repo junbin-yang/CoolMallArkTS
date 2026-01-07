@@ -1,4 +1,4 @@
-import { IBestCell, IBestCellGroup } from "@ibestservices/ibest-ui-v2";
+import { IBestCell, IBestCellGroup } from "ibestui";
 
 /**
  * @file 卡片标题单元格组件

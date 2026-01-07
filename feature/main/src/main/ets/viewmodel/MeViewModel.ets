@@ -1,6 +1,6 @@
 import { BaseViewModel } from "base";
-import { FootprintRepository, OrderRepository } from "data";
-import { Footprint, OrderCount, User } from "model";
+import { OrderRepository } from "data";
+import { Footprint, OrderCount } from "model";
 import { RequestHelper } from "result";
 import { getUserState, UserState } from "state";
 import {
@@ -27,23 +27,9 @@ export default class MeViewModel extends BaseViewModel {
    */
   private readonly userState: UserState = getUserState();
   /**
-   * 足迹仓库
-   */
-  private readonly footprintRepository: FootprintRepository = new FootprintRepository();
-  /**
    * 订单仓库
    */
   private readonly orderRepository: OrderRepository = new OrderRepository();
-  /**
-   * 登录状态
-   */
-  @Trace
-  isLoggedIn: boolean = false;
-  /**
-   * 用户信息
-   */
-  @Trace
-  userInfo: User = new User();
   /**
    * 订单统计
    */
@@ -108,106 +94,27 @@ export default class MeViewModel extends BaseViewModel {
   ];
 
   /**
-   * 页面显示完成
-   * @param {VisibilityChangeReason} reason - 可见性变化原因
+   * 页面出现前
    * @returns {void} 无返回值
    */
-  onShown(reason: VisibilityChangeReason): void {
-    super.onShown(reason);
-    this.refreshPageData();
+  aboutToAppear(): void {
+    this.userState.refreshUserInfo();
   }
 
   /**
-   * 刷新页面数据
+   * 用户订单统计
    * @returns {void} 无返回值
    */
-  private refreshPageData(): void {
-    this.syncUserState();
-    this.loadRecentFootprints();
-    this.loadOrderCount();
-  }
-
-  /**
-   * 同步用户登录状态与信息
-   * @returns {void} 无返回值
-   */
-  private syncUserState(): void {
-    this.isLoggedIn = this.userState.isLoggedIn();
-    this.userInfo = this.userState.getUserInfo();
-  }
-
-  /**
-   * 加载最近足迹
-   * @returns {void} 无返回值
-   */
-  private loadRecentFootprints(): void {
-    this.footprintRepository.getRecentFootprints(8)
-      .then((list: Footprint[]): void => {
-        this.recentFootprints = list;
-      })
-      .catch((): void => {
-        // 本地数据库读取失败时重置为空列表
-        this.recentFootprints = [];
-      });
-  }
-
-  /**
-   * 获取订单统计数据
-   * @returns {void} 无返回值
-   */
-  private loadOrderCount(): void {
-    if (!this.isLoggedIn) {
-      this.orderCount = new OrderCount();
+  getUserOrderStatistics(): void {
+    if (!this.userState.isLoggedIn()) {
       return;
     }
-    RequestHelper.repository<OrderCount>(this.orderRepository.getUserOrderCount())
+    RequestHelper.repository<object>(this.orderRepository.getUserOrderCount())
       .toast(false)
       .execute()
-      .then((data: OrderCount): void => {
-        this.orderCount = new OrderCount(data);
-      })
-      .catch((): void => {
-        // 请求失败时重置统计数据，避免脏数据
-        this.orderCount = new OrderCount();
+      .then((data: object): void => {
+        this.orderCount = OrderCount.fromResponse(data);
       });
-  }
-
-  /**
-   * 获取展示用昵称
-   * @returns {ResourceStr} 展示昵称
-   */
-  getDisplayName(): ResourceStr {
-    if (this.isLoggedIn && this.userInfo.nickName) {
-      return this.userInfo.nickName;
-    }
-    return $r("app.string.not_logged_in");
-  }
-
-  /**
-   * 是否有手机号可展示
-   * @returns {boolean} 是否展示手机号
-   */
-  hasPhone(): boolean {
-    return this.isLoggedIn && !!this.userInfo.phone;
-  }
-
-  /**
-   * 获取头像文字（无头像时使用）
-   * @returns {string} 头像文字
-   */
-  getAvatarText(): string {
-    if (this.userInfo.nickName) {
-      return this.userInfo.nickName.substring(0, 1);
-    }
-    return "未";
-  }
-
-  /**
-   * 是否存在头像地址
-   * @returns {boolean} 是否有头像
-   */
-  hasAvatar(): boolean {
-    return this.isLoggedIn && !!this.userInfo.avatarUrl;
   }
 
   /**
@@ -272,18 +179,10 @@ export default class MeViewModel extends BaseViewModel {
 
   /**
    * 跳转到订单列表
-   * @returns {void} 无返回值
-   */
-  toOrderListPage(): void {
-    navigateTo(OrderRoutes.List);
-  }
-
-  /**
-   * 跳转到指定状态的订单列表
    * @param {number} tabIndex - 订单标签索引
    * @returns {void} 无返回值
    */
-  toOrderListByTab(tabIndex: number): void {
+  toOrderListPage(tabIndex?: number): void {
     // TODO: 订单列表页支持 tab 参数后再传递
     navigateTo(OrderRoutes.List);
   }

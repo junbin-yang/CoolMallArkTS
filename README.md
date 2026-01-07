@@ -167,6 +167,7 @@ core/                   # 核心模块
 │   ├── database/       # 数据库
 │   ├── datastore/      # 数据存储
 │   ├── designsystem/   # 设计系统
+│   ├── ibestui/        # IBest UI 组件库
 │   ├── model/          # 数据模型
 │   ├── navigation/     # 导航
 │   ├── network/        # 网络层

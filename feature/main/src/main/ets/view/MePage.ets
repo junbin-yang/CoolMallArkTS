@@ -10,7 +10,8 @@ import {
   SpaceVerticalSmall,
   SpaceVerticalXSmall
 } from "designsystem";
-import { Footprint } from "model";
+import { Footprint, User } from "model";
+import { getUserState, getWindowSafeAreaState, UserState, WindowSafeAreaState } from "state";
 import {
   AppNavDestination,
   ArrowRightIcon,
@@ -18,11 +19,9 @@ import {
   Card,
   CardTitleCell,
   CommonIcon,
-  IBestBadge,
-  IBestCell,
-  IBestCellGroup,
   NetWorkImage
 } from "ui";
+import { IBestBadge, IBestCell, IBestCellGroup } from "ibestui";
 import { MeMenuItem } from "../model/MeMenuItem";
 import { OrderStatusItem } from "../model/OrderStatusItem";
 import MeViewModel from "../viewmodel/MeViewModel";
@@ -38,6 +37,16 @@ export struct MePage {
    */
   @Local
   private vm: MeViewModel = new MeViewModel();
+  /**
+   * 当前窗口安全区状态
+   */
+  @Local
+  private windowSafeAreaState: WindowSafeAreaState = getWindowSafeAreaState();
+  /**
+   * 全局用户状态
+   */
+  @Local
+  private userState: UserState = getUserState();
 
   /**
    * 构建我的页面
@@ -47,7 +56,12 @@ export struct MePage {
     AppNavDestination({
       title: $r("app.string.me"),
       viewModel: this.vm,
-      hideTitleBar: true
+      hideTitleBar: true,
+      paddingValue: {
+        top: this.windowSafeAreaState.topInset,
+        left: this.windowSafeAreaState.leftInset,
+        right: this.windowSafeAreaState.rightInset
+      }
     }) {
       this.MeContent();
     }
@@ -90,7 +104,6 @@ export struct MePage {
       left: $r("app.float.space_horizontal_medium"),
       right: $r("app.float.space_horizontal_medium"),
       top: $r("app.float.space_vertical_medium"),
-      bottom: $r("app.float.space_vertical_medium")
     });
   }
 
@@ -109,7 +122,7 @@ export struct MePage {
     }) {
       RowStartCenter() {
         Avatar({
-          src: this.vm.userInfo.avatarUrl,
+          src: this.getCurrentUser().avatarUrl,
           avatarSize: 68,
           onTap: (): void => this.vm.onHeadClick()
         });
@@ -130,7 +143,7 @@ export struct MePage {
   @Builder
   private buildUserInfoTitle(): void {
     ColumnStart() {
-      Text(this.vm.getDisplayName())
+      Text(this.getDisplayName())
         .fontSize($r("app.float.display_medium"))
         .fontColor($r("app.color.text_primary"))
         .fontWeight(FontWeight.Medium);
@@ -147,7 +160,7 @@ export struct MePage {
    */
   @Builder
   private buildUserPhoneLine(): void {
-    if (this.vm.hasPhone()) {
+    if (this.hasPhone()) {
       RowStartCenter() {
         Text($r("app.string.phone_number"))
           .fontSize($r("app.float.body_medium"))
@@ -159,7 +172,7 @@ export struct MePage {
 
         SpaceHorizontalXSmall();
 
-        Text(this.vm.userInfo.phone)
+        Text(this.getCurrentUser().phone)
           .fontSize($r("app.float.body_medium"))
           .fontColor($r("app.color.text_tertiary"));
       }
@@ -168,6 +181,43 @@ export struct MePage {
         .fontSize($r("app.float.body_medium"))
         .fontColor($r("app.color.text_tertiary"));
     }
+  }
+
+  /**
+   * 获取当前用户信息
+   * @returns {User} 用户信息
+   */
+  private getCurrentUser(): User {
+    return this.userState.getUserInfo();
+  }
+
+  /**
+   * 是否已登录
+   * @returns {boolean} 是否登录
+   */
+  private isLoggedIn(): boolean {
+    return this.userState.isLoggedIn();
+  }
+
+  /**
+   * 获取展示昵称
+   * @returns {ResourceStr} 展示昵称
+   */
+  private getDisplayName(): ResourceStr {
+    const userInfo: User = this.getCurrentUser();
+    if (this.isLoggedIn() && userInfo.nickName) {
+      return userInfo.nickName;
+    }
+    return $r("app.string.not_logged_in");
+  }
+
+  /**
+   * 是否有手机号可展示
+   * @returns {boolean} 是否展示手机号
+   */
+  private hasPhone(): boolean {
+    const userInfo: User = this.getCurrentUser();
+    return this.isLoggedIn() && !!userInfo.phone;
   }
 
   /**
@@ -293,7 +343,7 @@ export struct MePage {
       top: $r("app.float.space_vertical_medium"),
       bottom: $r("app.float.space_vertical_medium")
     })
-    .onClick((): void => this.vm.toOrderListByTab(item.tabIndex));
+    .onClick((): void => this.vm.toOrderListPage(item.tabIndex));
   }
 
   /**

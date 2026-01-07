@@ -125,6 +125,10 @@
     {
       "name": "launch",
       "srcPath": "./feature/launch",
+    },
+    {
+      "name": "ibestui",
+      "srcPath": "./core/ibestui",
     }
   ]
 }

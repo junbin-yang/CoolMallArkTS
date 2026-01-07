@@ -6,3 +6,7 @@
 export { AccountStoreDataSource } from "./src/main/ets/datasource/account/AccountStoreDataSource";
 
 export { AccountStoreDataSourceImpl } from "./src/main/ets/datasource/account/AccountStoreDataSourceImpl";
+
+export { TokenStoreDataSource } from "./src/main/ets/datasource/token/TokenStoreDataSource";
+
+export { TokenStoreDataSourceImpl } from "./src/main/ets/datasource/token/TokenStoreDataSourceImpl";

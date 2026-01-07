@@ -177,6 +177,7 @@ core/                   # Core modules
 │   ├── database/       # Database
 │   ├── datastore/      # Data storage
 │   ├── designsystem/   # Design system
+│   ├── ibestui/        # IBest UI 组件库
 │   ├── model/          # Data models
 │   ├── navigation/     # Navigation
 │   ├── network/        # Network layer

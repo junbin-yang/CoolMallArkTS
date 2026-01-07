@@ -1,5 +1,5 @@
-import { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from "@ohos/axios";
-
+import { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig, AxiosError, AxiosHeaders } from "@ohos/axios";
+import { TokenStoreDataSource, TokenStoreDataSourceImpl } from "datastore";
 import { setupLogInterceptor } from "./LogInterceptor";
 
 /**
@@ -17,7 +17,14 @@ export function setupInterceptors(axiosInstance: AxiosInstance): void {
 
   // 请求拦截器
   axiosInstance.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
+    async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
+      const tokenStore: TokenStoreDataSource = new TokenStoreDataSourceImpl();
+      const token: string = await tokenStore.getToken();
+      if (token) {
+        const headers: AxiosHeaders = AxiosHeaders.from(config.headers);
+        headers.set("Authorization", token);
+        config.headers = headers;
+      }
       return config;
     },
     (error: AxiosError) => {

@@ -1,4 +1,4 @@
-import { IBestAvatar } from "@ibestservices/ibest-ui-v2";
+import { IBestAvatar } from "ibestui";
 
 /**
  * @file 头像组件（基于 IBestAvatar 封装）

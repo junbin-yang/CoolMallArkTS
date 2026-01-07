@@ -1,5 +1,5 @@
 import { NetworkResponse } from "model";
-import { RequestUI } from "./RequestUI";
+import { ToastUtils } from "util";
 
 /**
  * @file 网络请求结果处理
@@ -105,7 +105,7 @@ export class RequestHelper<T> {
       this.beforeStart();
     }
     if (this.useLoading) {
-      RequestUI.showLoading();
+      ToastUtils.showLoading();
     }
     try {
       const rawResp: NetworkResponse<T> = await this.source;
@@ -125,7 +125,7 @@ export class RequestHelper<T> {
       throw err;
     } finally {
       if (this.useLoading) {
-        RequestUI.hideLoading();
+        ToastUtils.hide();
       }
     }
   }
@@ -136,7 +136,7 @@ export class RequestHelper<T> {
    */
   private toastIfNeeded(message: string): void {
     if (this.useToast) {
-      RequestUI.toastError(message);
+      ToastUtils.showError(message);
     }
   }
 }

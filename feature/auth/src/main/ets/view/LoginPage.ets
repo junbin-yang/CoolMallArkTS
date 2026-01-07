@@ -10,7 +10,8 @@ import {
   SpaceVerticalXLarge,
   SpaceVerticalXXLarge
 } from "designsystem";
-import { AppNavDestination, CommonIcon, IBestButton, LogoIcon } from "ui";
+import { IBestButton } from "ibestui";
+import { AppNavDestination, CommonIcon, LogoIcon } from "ui";
 import { bp } from "state";
 import { UserAgreement } from "../component/UserAgreement";
 import LoginViewModel from "../viewmodel/LoginViewModel";

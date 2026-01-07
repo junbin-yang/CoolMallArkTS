@@ -109,6 +109,8 @@ export { PageRequest } from './src/main/ets/request/PageRequest';
 
 export { QQLoginRequest } from './src/main/ets/request/QQLoginRequest';
 
+export { PasswordLoginRequest } from './src/main/ets/request/PasswordLoginRequest';
+
 export { ReadMessageRequest } from './src/main/ets/request/ReadMessageRequest';
 
 export { ReceiveCouponRequest } from './src/main/ets/request/ReceiveCouponRequest';

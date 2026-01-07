@@ -1,5 +1,5 @@
 import { AuthNetworkDataSource, AuthNetworkDataSourceImpl } from "network";
-import { NetworkResponse, Auth, Captcha, QQLoginRequest } from "model";
+import { NetworkResponse, Auth, Captcha, QQLoginRequest, PasswordLoginRequest } from "model";
 
 /**
  * @file 认证相关仓库类，封装认证模块请求
@@ -78,7 +78,7 @@ export class AuthRepository {
    * @param params 登录参数，包含用户名、密码等
    * @returns 包含认证信息的网络响应
    */
-  async loginByPassword(params: Record<string, string>): Promise<NetworkResponse<Auth>> {
+  async loginByPassword(params: PasswordLoginRequest): Promise<NetworkResponse<Auth>> {
     return this.networkDataSource.loginByPassword(params);
   }
 

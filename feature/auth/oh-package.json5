@@ -13,6 +13,8 @@
     "result": "file:../../core/result",
     "base": "file:../../core/base",
     "designsystem": "file:../../core/designsystem",
-    "ui": "file:../../core/ui"
+    "ui": "file:../../core/ui",
+    "ibestui": "file:../../core/ibestui",
+    "util": "file:../../core/util"
   }
 }

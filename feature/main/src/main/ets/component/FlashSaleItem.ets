@@ -1,6 +1,7 @@
 import { ColumnStart, SpaceVerticalSmall, SpaceVerticalXSmall } from "designsystem";
 import { Goods } from "model";
-import { IBestPrice, NetWorkImage } from "ui";
+import { IBestPrice } from "ibestui";
+import { NetWorkImage } from "ui";
 
 /**
  * @file 限时精选卡片项

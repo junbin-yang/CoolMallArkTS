@@ -1,6 +1,6 @@
 import { AxiosResponse } from "@ohos/axios";
 import { NetworkClient } from "../../NetworkClient";
-import { Auth, Captcha, NetworkResponse, QQLoginRequest } from "model";
+import { Auth, Captcha, NetworkResponse, QQLoginRequest, PasswordLoginRequest } from "model";
 import { AuthNetworkDataSource } from "./AuthNetworkDataSource";
 
 /**
@@ -79,7 +79,7 @@ export class AuthNetworkDataSourceImpl implements AuthNetworkDataSource {
    * @param {Record<string, string>} params - 登录参数
    * @returns {Promise<NetworkResponse<Auth>>} 登录结果
    */
-  async loginByPassword(params: Record<string, string>): Promise<NetworkResponse<Auth>> {
+  async loginByPassword(params: PasswordLoginRequest): Promise<NetworkResponse<Auth>> {
     const response: AxiosResponse<NetworkResponse<Auth>> =
       await NetworkClient.http.post("user/login/password", params);
     return response.data;

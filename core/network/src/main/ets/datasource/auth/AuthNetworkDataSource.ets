@@ -1,4 +1,4 @@
-import { Auth, Captcha, NetworkResponse, QQLoginRequest } from "model";
+import { Auth, Captcha, NetworkResponse, QQLoginRequest, PasswordLoginRequest } from "model";
 
 /**
  * @file 认证相关网络数据源接口
@@ -53,7 +53,7 @@ export interface AuthNetworkDataSource {
    * @param params 登录参数，包含用户名、密码等
    * @return 返回 Promise，包含认证结果
    */
-  loginByPassword(params: Record<string, string>): Promise<NetworkResponse<Auth>>;
+  loginByPassword(params: PasswordLoginRequest): Promise<NetworkResponse<Auth>>;
 
   /**
    * 获取图片验证码

@@ -1,7 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { IBestInit, IBestSetUIBaseStyle } from 'ui';
+import { IBestUIInitializer } from "ibestui";
 import { MainGraph } from 'main';
 import { AuthGraph } from 'auth';
 import { CommonGraph } from 'common';
@@ -13,7 +13,7 @@ import { UserGraph } from 'user';
 import { OrderGraph } from 'order';
 import { MarketGraph } from 'market';
 import { IBestORMInit } from 'database';
-import { ContextUtil, PermissionUtils } from 'util';
+import { ContextUtil } from 'util';
 
 const DOMAIN = 0x0000;
 
@@ -50,11 +50,7 @@ export default class EntryAbility extends UIAbility {
   async onWindowStageCreate(windowStage: window.WindowStage): Promise<void> {
     await this.initIBestORM();
     windowStage.loadContent('view/EntryPage', (_) => {
-      this.initIBestUI(windowStage);
-      const permissionCli = new PermissionUtils();
-      permissionCli.requestAudioPermission((granted: boolean) => {
-        hilog.info(DOMAIN, 'testTag', 'requestAudioPermission: %{public}d', granted);
-      })
+      IBestUIInitializer.initIBestUI(windowStage, this.context);
     });
   }
 
@@ -89,27 +85,6 @@ export default class EntryAbility extends UIAbility {
    * @returns {void} 无返回值
    */
   onBackground(): void {
-  }
-
-  /**
-   * 初始化 IBest UI 组件库
-   * @param {window.WindowStage} windowStage - 窗口阶段
-   */
-  initIBestUI(windowStage: window.WindowStage): void {
-    IBestInit(windowStage, this.context);
-    this.setIBestUIBaseStyle();
-  }
-
-  /**
-   * 设置 IBest UI 组件库基础样式
-   */
-  setIBestUIBaseStyle(): void {
-    IBestSetUIBaseStyle({
-      primary: $r('app.color.primary'),
-      success: $r('app.color.success'),
-      warning: $r('app.color.warning'),
-      danger: $r('app.color.danger'),
-    });
   }
 
   /**

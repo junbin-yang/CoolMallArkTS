@@ -8,7 +8,7 @@ import {
   ColumnSpaceBetweenStart,
   ColumnSpaceBetweenEnd
 } from "designsystem";
-import { IBestPrice } from "@ibestservices/ibest-ui-v2";
+import { IBestPrice } from "ibestui";
 import { Goods } from "model";
 import { NetWorkImage } from "../image/NetWorkImage";
 import { Card } from "../../../../../Index";

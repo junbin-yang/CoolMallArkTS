@@ -1,6 +1,8 @@
 import { PersistenceV2, Type } from "@kit.ArkUI";
 import { contextConstant } from "@kit.AbilityKit";
+import { TokenStoreRepository, UserInfoRepository } from "data";
 import { Auth, User } from "model";
+import { RequestHelper } from "result";
 
 /**
  * @file 全局用户状态（持久化），提供跨页面共享的响应式状态
@@ -41,6 +43,7 @@ export class UserState {
   updateUserState(auth: Auth, user: User): void {
     this.auth = Auth.fromResponse(auth);
     this.userInfo = User.fromResponse(user);
+    new TokenStoreRepository().saveToken(this.auth.token);
     this.persist();
   }
 
@@ -65,6 +68,7 @@ export class UserState {
    */
   updateAuth(auth: Auth): void {
     this.auth = Auth.fromResponse(auth);
+    new TokenStoreRepository().saveToken(this.auth.token);
     this.persist();
   }
 
@@ -77,6 +81,7 @@ export class UserState {
   logout(): void {
     this.auth = new Auth();
     this.userInfo = new User();
+    new TokenStoreRepository().clearToken();
     PersistenceV2.remove(USER_STATE_KEY);
   }
 
@@ -94,13 +99,20 @@ export class UserState {
   }
 
   /**
-   * 从网络刷新用户信息（占位，待接入网络请求）
+   * 从网络刷新用户信息
    * @returns {void} 无返回值
    * @example
   * getUserState().refreshUserInfo();
    */
   refreshUserInfo(): void {
-    // TODO: 待实现
+    if (!this.isLoggedIn()) {
+      return;
+    }
+    RequestHelper.repository(new UserInfoRepository().getPersonInfo())
+      .execute()
+      .then((userInfo: User): void => {
+        this.updateUserInfo(userInfo);
+      });
   }
 
   /**

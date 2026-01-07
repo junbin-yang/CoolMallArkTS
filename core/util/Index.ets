@@ -11,6 +11,10 @@ export { PermissionUtils } from "./src/main/ets/permission/PermissionUtils";
 
 export { ImageUtil } from "./src/main/ets/image/ImageUtil";
 
+export { ToastUtils } from "./src/main/ets/toast/ToastUtils";
+
+export { ValidationUtil } from "./src/main/ets/validation/ValidationUtil";
+
 export {
   NotificationUtil,
   NotificationOptions,
