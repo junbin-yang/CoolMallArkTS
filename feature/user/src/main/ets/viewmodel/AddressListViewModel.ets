@@ -1,6 +1,7 @@
-import { BaseNetWorkListViewModel } from "base";
+import { BaseNetWorkListUiState, BaseNetWorkListViewModel } from "base";
 import { AddressRepository } from "data";
 import { Address, NetworkPageData, NetworkResponse, PageRequest } from "model";
+import { UserNavigator } from "navigation";
 
 /**
  * @file 地址列表页面 ViewModel
@@ -38,6 +39,7 @@ export default class AddressListViewModel extends BaseNetWorkListViewModel<Addre
    * @returns {void} 无返回值
    */
   onEditAddress(addressId: number): void {
+    UserNavigator.toAddressDetail(true, addressId);
   }
 
   /**
@@ -46,5 +48,14 @@ export default class AddressListViewModel extends BaseNetWorkListViewModel<Addre
    * @returns {void} 无返回值
    */
   onDeleteAddress(addressId: number): void {
+  }
+
+  /**
+   * 是否显示底部操作按钮
+   * @returns {boolean} 是否显示
+   */
+  shouldShowBottomButton(): boolean {
+    return this.uiState !== BaseNetWorkListUiState.LOADING
+      && this.uiState !== BaseNetWorkListUiState.ERROR;
   }
 }

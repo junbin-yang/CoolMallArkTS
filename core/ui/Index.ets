@@ -50,3 +50,5 @@ export { GoodsGridItem } from "./src/main/ets/component/goods/GoodsGridItem";
 export { AddressCard } from "./src/main/ets/component/address/AddressCard";
 
 export { AddressActionButton } from "./src/main/ets/component/address/AddressActionButton";
+
+export { AppBottomButton } from "./src/main/ets/component/bottombar/AppBottomButton";

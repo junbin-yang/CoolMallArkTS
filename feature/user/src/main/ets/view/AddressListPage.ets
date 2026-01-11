@@ -1,6 +1,16 @@
-import { P100 } from "designsystem";
+import { BaseNetWorkListUiState } from "base";
+import { ColumnBase, ColumnStart, P100 } from "designsystem";
 import { Address } from "model";
-import { AddressActionButton, AddressCard, AppNavDestination, BaseNetWorkListView, RefreshLayout } from "ui";
+import { UserNavigator } from "navigation";
+import { getWindowSafeAreaState, WindowSafeAreaState } from "state";
+import {
+  AddressActionButton,
+  AddressCard,
+  AppBottomButton,
+  AppNavDestination,
+  BaseNetWorkListView,
+  RefreshLayout
+} from "ui";
 import AddressListViewModel from "../viewmodel/AddressListViewModel";
 
 /**
@@ -18,6 +28,11 @@ export struct AddressListPage {
    * 列表滚动控制器，用于刷新同步
    */
   private listScroller: Scroller = new Scroller();
+  /**
+   * 当前窗口安全区状态
+   */
+  @Param
+  windowSafeAreaState: WindowSafeAreaState = getWindowSafeAreaState();
 
   /**
    * 构建地址列表页面
@@ -26,13 +41,27 @@ export struct AddressListPage {
   build() {
     AppNavDestination({
       title: $r("app.string.address_list_title"),
-      viewModel: this.vm
+      viewModel: this.vm,
+      paddingValue: {
+        top: this.windowSafeAreaState.topInset,
+        left: this.windowSafeAreaState.leftInset,
+        right: this.windowSafeAreaState.rightInset,
+      }
     }) {
-      BaseNetWorkListView({
-        uiState: this.vm.uiState,
-        onRetry: (): void => this.vm.retryRequest(),
-        content: (): void => this.AddressListContent()
-      })
+      ColumnStart({ fillMaxSize: true }) {
+        BaseNetWorkListView({
+          uiState: this.vm.uiState,
+          onRetry: (): void => this.vm.retryRequest(),
+          content: (): void => this.AddressListContent()
+        }).layoutWeight(1);
+
+        if (this.vm.shouldShowBottomButton()) {
+          AppBottomButton({
+            text: $r("app.string.address_add_new"),
+            onTap: (): void => UserNavigator.toAddressDetail()
+          });
+        }
+      }
     }
   }
 
