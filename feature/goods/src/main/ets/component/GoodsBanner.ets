@@ -1,5 +1,4 @@
 import { P100 } from "designsystem";
-import { BreakpointState, getBreakpointState } from "state";
 
 /**
  * @file 商品详情轮播图组件
@@ -27,11 +26,6 @@ export struct GoodsBanner {
    */
   @Param
   imageFit: ImageFit = ImageFit.Cover;
-  /**
-   * 屏幕断点状态
-   */
-  @Local
-  private breakpointState: BreakpointState = getBreakpointState();
 
   /**
    * 构建轮播图视图
@@ -49,26 +43,14 @@ export struct GoodsBanner {
       }
       .displayCount(1)
       .displayMode(SwiperDisplayMode.STRETCH)
-      .indicator(this.getIndicator())
+      .indicator(Indicator.dot()
+        .color($r("app.color.bg_purple_light"))
+        .selectedColor($r("app.color.primary")))
       .autoPlay(this.autoPlay)
       .loop(this.loop)
       .width(P100)
       .height(P100)
       .aspectRatio(1);
     }
-  }
-
-  /**
-   * 获取轮播图指示器
-   * @returns {DotIndicator | boolean} 指示器配置
-   */
-  private getIndicator(): DotIndicator | boolean {
-    if (this.breakpointState.isXS() || this.breakpointState.isSM()) {
-      return Indicator.dot()
-        .color($r("app.color.bg_purple_light"))
-        .selectedColor($r("app.color.primary"));
-    }
-
-    return false;
   }
 }

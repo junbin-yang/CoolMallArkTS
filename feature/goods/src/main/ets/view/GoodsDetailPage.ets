@@ -5,6 +5,7 @@ import { AppNavDestination, BaseNetWorkView } from "ui";
 import { GoodsBanner } from "../component/GoodsBanner";
 import { GoodsDetailBottomBar } from "../component/GoodsDetailBottomBar";
 import { GoodsInfoCard } from "../component/GoodsInfoCard";
+import { GoodsShippingServiceCard } from "../component/GoodsShippingServiceCard";
 import GoodsDetailViewModel from "../viewmodel/GoodsDetailViewModel";
 
 /**
@@ -83,6 +84,10 @@ export struct GoodsDetailPage {
           goodsInfo: this.vm.data?.goodsInfo ?? new Goods(),
           coupons: this.vm.data?.coupon ?? []
         });
+      }
+
+      ListItem() {
+        GoodsShippingServiceCard();
       }
     }
     .layoutWeight(1)
