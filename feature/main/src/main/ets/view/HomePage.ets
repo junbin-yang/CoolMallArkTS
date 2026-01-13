@@ -8,6 +8,7 @@ import { HomeTopBar } from "../component/HomeTopBar";
 import HomeViewModel from "../viewmodel/HomeViewModel";
 import { P100, SpaceVerticalSmall } from "designsystem";
 import { bp } from "state";
+import { GoodsNavigator } from "navigation";
 
 /**
  * @file 首页视图
@@ -69,7 +70,12 @@ export struct HomePage {
         }
 
         ListItem() {
-          HomeFlashSaleSection({ goodsList: this.vm.pageData.flashSale ?? [] });
+          HomeFlashSaleSection({
+            goodsList: this.vm.pageData.flashSale ?? [],
+            onGoodsClick: (id: number): void => {
+              GoodsNavigator.toDetail(id);
+            }
+          });
         }
 
         ListItem() {
@@ -82,7 +88,8 @@ export struct HomePage {
               GridItem() {
                 GoodsListItem({
                   goods: item,
-                  onItemClick: (_id: number): void => {
+                  onItemClick: (id: number): void => {
+                    GoodsNavigator.toDetail(id);
                   }
                 });
               }
@@ -104,7 +111,8 @@ export struct HomePage {
               GridItem() {
                 GoodsGridItem({
                   goods: item,
-                  onItemClick: (_id: number): void => {
+                  onItemClick: (id: number): void => {
+                    GoodsNavigator.toDetail(id);
                   }
                 });
               }

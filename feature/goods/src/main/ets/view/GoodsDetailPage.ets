@@ -1,4 +1,10 @@
-import { AppNavDestination } from "ui";
+import { ColumnStart, P100 } from "designsystem";
+import { Goods } from "model";
+import { BreakpointState, getBreakpointState, getWindowSafeAreaState, WindowSafeAreaState } from "state";
+import { AppNavDestination, BaseNetWorkView } from "ui";
+import { GoodsBanner } from "../component/GoodsBanner";
+import { GoodsDetailBottomBar } from "../component/GoodsDetailBottomBar";
+import { GoodsInfoCard } from "../component/GoodsInfoCard";
 import GoodsDetailViewModel from "../viewmodel/GoodsDetailViewModel";
 
 /**
@@ -12,6 +18,16 @@ export struct GoodsDetailPage {
    */
   @Local
   private vm: GoodsDetailViewModel = new GoodsDetailViewModel();
+  /**
+   * 当前窗口安全区状态
+   */
+  @Param
+  private windowSafeAreaState: WindowSafeAreaState = getWindowSafeAreaState();
+  /**
+   * 屏幕断点状态
+   */
+  @Local
+  private breakpointState: BreakpointState = getBreakpointState();
 
   /**
    * 构建商品详情页面
@@ -19,10 +35,18 @@ export struct GoodsDetailPage {
    */
   build() {
     AppNavDestination({
-      title: "商品详情",
-      viewModel: this.vm
+      hideTitleBar: true,
+      viewModel: this.vm,
+      paddingValue: {
+        left: this.windowSafeAreaState.leftInset,
+        right: this.windowSafeAreaState.rightInset,
+      }
     }) {
-      this.GoodsDetailContent();
+      BaseNetWorkView({
+        uiState: this.vm.uiState,
+        onRetry: (): void => this.vm.retryRequest(),
+        content: (): void => this.GoodsDetailContent()
+      });
     }
   }
 
@@ -32,6 +56,37 @@ export struct GoodsDetailPage {
    */
   @Builder
   private GoodsDetailContent() {
-    Text("商品详情页面内容视图")
+    ColumnStart({ fillMaxSize: true }) {
+      this.GoodsDetailList();
+      GoodsDetailBottomBar();
+    }
+  }
+
+  /**
+   * 商品详情滚动列表
+   * @returns {void} 无返回值
+   */
+  @Builder
+  private GoodsDetailList(): void {
+    List() {
+      ListItem() {
+        GoodsBanner({
+          bannerList: this.vm.data?.goodsInfo?.pics ?? [],
+          autoPlay: false,
+          loop: false,
+          imageFit: ImageFit.Cover
+        });
+      }
+
+      ListItem() {
+        GoodsInfoCard({
+          goodsInfo: this.vm.data?.goodsInfo ?? new Goods(),
+          coupons: this.vm.data?.coupon ?? []
+        });
+      }
+    }
+    .layoutWeight(1)
+    .width(P100)
+    .height(P100);
   }
 }
