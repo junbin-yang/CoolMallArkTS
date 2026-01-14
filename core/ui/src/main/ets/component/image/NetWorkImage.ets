@@ -17,6 +17,16 @@ export struct NetWorkImage {
   @Param
   sizeValue: Length | undefined = undefined;
   /**
+   * 图片宽度
+   */
+  @Param
+  widthValue: Length | undefined = undefined;
+  /**
+   * 图片高度
+   */
+  @Param
+  heightValue: Length | undefined = undefined;
+  /**
    * 图片缩放模式
    */
   @Param
@@ -52,13 +62,34 @@ export struct NetWorkImage {
       }
 
       if (this.model) {
-        Image(this.model)
-          .objectFit(this.imageFit)
-          .borderRadius(this.cornerRadius ?? 0);
+        if (
+          (this.widthValue ?? this.sizeValue) !== undefined &&
+          (this.heightValue ?? this.sizeValue) !== undefined
+        ) {
+          Image(this.model)
+            .objectFit(this.imageFit)
+            .borderRadius(this.cornerRadius ?? 0)
+            .width(P100)
+            .height(P100);
+        } else if ((this.widthValue ?? this.sizeValue) !== undefined) {
+          Image(this.model)
+            .objectFit(this.imageFit)
+            .borderRadius(this.cornerRadius ?? 0)
+            .width(P100);
+        } else if ((this.heightValue ?? this.sizeValue) !== undefined) {
+          Image(this.model)
+            .objectFit(this.imageFit)
+            .borderRadius(this.cornerRadius ?? 0)
+            .height(P100);
+        } else {
+          Image(this.model)
+            .objectFit(this.imageFit)
+            .borderRadius(this.cornerRadius ?? 0);
+        }
       }
     }
-    .width(this.sizeValue)
-    .height(this.sizeValue)
+    .width(this.widthValue ?? this.sizeValue)
+    .height(this.heightValue ?? this.sizeValue)
     .borderRadius(this.cornerRadius ?? 0);
   }
 }

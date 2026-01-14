@@ -55,7 +55,6 @@ export struct GoodsInfoCard {
       paddingValue: {
         left: $r("app.float.space_horizontal_medium"),
         right: $r("app.float.space_horizontal_medium"),
-        top: $r("app.float.space_vertical_medium")
       }
     }) {
       Card({

@@ -1,12 +1,15 @@
-import { ColumnStart, P100 } from "designsystem";
+import { ColumnStart, P100, SpaceVerticalMedium } from "designsystem";
 import { Goods } from "model";
-import { BreakpointState, getBreakpointState, getWindowSafeAreaState, WindowSafeAreaState } from "state";
+import { getWindowSafeAreaState, WindowSafeAreaState } from "state";
 import { AppNavDestination, BaseNetWorkView } from "ui";
 import { GoodsBanner } from "../component/GoodsBanner";
 import { GoodsDetailBottomBar } from "../component/GoodsDetailBottomBar";
+import { GoodsCommentsCard } from "../component/GoodsCommentsCard";
 import { GoodsInfoCard } from "../component/GoodsInfoCard";
 import { GoodsShippingServiceCard } from "../component/GoodsShippingServiceCard";
 import GoodsDetailViewModel from "../viewmodel/GoodsDetailViewModel";
+import { GoodsDetailRichHeader } from "../component/GoodsDetailRichHeader";
+import { GoodsDetailRichImageItem } from "../component/GoodsDetailRichImageItem";
 
 /**
  * @file 商品详情页面视图
@@ -24,11 +27,6 @@ export struct GoodsDetailPage {
    */
   @Param
   private windowSafeAreaState: WindowSafeAreaState = getWindowSafeAreaState();
-  /**
-   * 屏幕断点状态
-   */
-  @Local
-  private breakpointState: BreakpointState = getBreakpointState();
 
   /**
    * 构建商品详情页面
@@ -80,6 +78,10 @@ export struct GoodsDetailPage {
       }
 
       ListItem() {
+        SpaceVerticalMedium();
+      }
+
+      ListItem() {
         GoodsInfoCard({
           goodsInfo: this.vm.data?.goodsInfo ?? new Goods(),
           coupons: this.vm.data?.coupon ?? []
@@ -87,7 +89,44 @@ export struct GoodsDetailPage {
       }
 
       ListItem() {
+        SpaceVerticalMedium();
+      }
+
+      ListItem() {
         GoodsShippingServiceCard();
+      }
+
+      ListItem() {
+        SpaceVerticalMedium();
+      }
+
+      if (this.vm.data?.comment && this.vm.data.comment.length > 0) {
+        ListItem() {
+          GoodsCommentsCard({ comments: this.vm.data?.comment ?? [] });
+        }
+
+        ListItem() {
+          SpaceVerticalMedium();
+        }
+      }
+
+      if (this.vm.data?.goodsInfo?.contentPics && this.vm.data.goodsInfo.contentPics.length > 0) {
+        ListItem() {
+          GoodsDetailRichHeader();
+        }
+
+        ForEach(this.vm.data.goodsInfo.contentPics, (pic: string, index: number): void => {
+          ListItem() {
+            GoodsDetailRichImageItem({
+              pic: pic,
+              isLast: index === this.vm.data!.goodsInfo!.contentPics!.length - 1
+            });
+          }
+        }, (pic: string, index: number): string => `${pic}-${index}`);
+      }
+
+      ListItem() {
+        SpaceVerticalMedium();
       }
     }
     .layoutWeight(1)
