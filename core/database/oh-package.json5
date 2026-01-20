@@ -7,6 +7,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "model": "file:../model",
-    "@ibestservices/ibest-orm": "^2.0.2"
+    "@ibestservices/ibest-orm": "2.0.2"
   }
 }

@@ -98,6 +98,7 @@ export struct AddressListPage {
       }
       .width(P100)
       .height(P100)
+      .edgeEffect(EdgeEffect.None)
       .padding($r("app.float.space_padding_medium"));
     }
   }

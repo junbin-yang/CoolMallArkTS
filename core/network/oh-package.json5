@@ -6,7 +6,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ohos/axios": "^2.2.6",
+    "@ohos/axios": "2.2.6",
     "model": "file:../model",
     "datastore": "file:../datastore"
   }

@@ -1,5 +1,5 @@
 /**
- * @file state 模块统一导出
+ * @file datastore 模块统一导出
  * @author Joker.X
  */
 

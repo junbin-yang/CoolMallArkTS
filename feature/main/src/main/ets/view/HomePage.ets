@@ -126,7 +126,9 @@ export struct HomePage {
 
         SpaceVerticalSmall()
 
-      }.padding($r("app.float.space_padding_medium"));
+      }
+      .edgeEffect(EdgeEffect.None)
+      .padding($r("app.float.space_padding_medium"));
     }
   }
 }

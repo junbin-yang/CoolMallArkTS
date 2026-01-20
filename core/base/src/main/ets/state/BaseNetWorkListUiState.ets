@@ -14,9 +14,6 @@ export enum BaseNetWorkListUiState {
   /**
    * 请求失败
    */
-  /**
-   * 请求失败
-   */
   ERROR = "error",
   /**
    * 空数据
