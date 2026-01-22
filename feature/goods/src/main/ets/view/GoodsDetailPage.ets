@@ -3,6 +3,7 @@ import { Goods } from "model";
 import { navigateBack } from "navigation";
 import { BreakpointState, getBreakpointState, getWindowSafeAreaState, WindowSafeAreaState } from "state";
 import { AppNavDestination, BaseNetWorkView } from "ui";
+import { SpecSelectModal } from "ui/src/main/ets/component/modal/SpecSelectModal";
 import { GoodsBanner } from "../component/GoodsBanner";
 import { GoodsDetailBottomBar } from "../component/GoodsDetailBottomBar";
 import { GoodsCommentsCard } from "../component/GoodsCommentsCard";
@@ -78,6 +79,20 @@ export struct GoodsDetailPage {
         topInset: this.windowSafeAreaState.topInset,
         onBackClick: (): void => navigateBack()
       });
+
+      // 规格选择弹窗
+      SpecSelectModal({
+        visible: this.vm.showSpecSelectModal,
+        onDismiss: (): void => this.vm.dismissSpecModal(),
+        goods: this.vm.data?.goodsInfo ?? null,
+        uiState: this.vm.specUiState,
+        specList: this.vm.specList,
+        selectedSpec: this.vm.selectedSpec,
+        onSpecSelected: (spec): void => this.vm.selectSpec(spec),
+        onAddToCart: async (selectedGoods): Promise<void> => await this.vm.addToCart(selectedGoods),
+        onBuyNow: (selectedGoods): void => this.vm.buyNow(selectedGoods),
+        onRetry: (): void => this.vm.loadGoodsSpecs()
+      });
     }
   }
 
@@ -89,7 +104,10 @@ export struct GoodsDetailPage {
   private GoodsDetailSmallLayout(): void {
     ColumnStart({ fillMaxSize: true }) {
       this.GoodsDetailList(true);
-      GoodsDetailBottomBar();
+      GoodsDetailBottomBar({
+        onBuyNowClick: (): void => this.vm.showSpecModal(),
+        onAddToCartClick: (): void => this.vm.showSpecModal()
+      });
     }
   }
 
@@ -113,7 +131,10 @@ export struct GoodsDetailPage {
       ColumnStart({ widthValue: P50, heightValue: P100 }) {
         Blank().height(this.windowSafeAreaState.topInset ?? 0);
         this.GoodsDetailList(false);
-        GoodsDetailBottomBar();
+        GoodsDetailBottomBar({
+          onBuyNowClick: (): void => this.vm.showSpecModal(),
+          onAddToCartClick: (): void => this.vm.showSpecModal()
+        });
       }
     }
   }

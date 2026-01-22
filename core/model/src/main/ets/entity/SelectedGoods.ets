@@ -1,5 +1,10 @@
+import { Goods } from "./Goods";
+import { GoodsSpec } from "./GoodsSpec";
+
 /**
- * @file 选中商品模型（用于创建订单）
+ * @file 已选商品项模型
+ *
+ * 用于规格选择后返回的数据，表示用户选择的单个商品规格项
  * @author Joker.X
  */
 export class SelectedGoods {
@@ -8,17 +13,17 @@ export class SelectedGoods {
    */
   goodsId: number = 0;
   /**
-   * SKU ID（可选）
+   * 商品信息
    */
-  skuId?: number | null = null;
+  goodsInfo?: Goods | null = null;
   /**
-   * 购买数量
+   * 规格
    */
-  quantity: number = 1;
+  spec?: GoodsSpec | null = null;
   /**
-   * 单价（可选）
+   * 数量
    */
-  price?: number | null = null;
+  count: number = 0;
 
   /**
    * @param {Partial<SelectedGoods>} init - 初始化数据
@@ -28,8 +33,8 @@ export class SelectedGoods {
       return;
     }
     this.goodsId = init.goodsId ?? this.goodsId;
-    this.skuId = init.skuId ?? this.skuId;
-    this.quantity = init.quantity ?? this.quantity;
-    this.price = init.price ?? this.price;
+    this.goodsInfo = init.goodsInfo ?? this.goodsInfo;
+    this.spec = init.spec ?? this.spec;
+    this.count = init.count ?? this.count;
   }
 }

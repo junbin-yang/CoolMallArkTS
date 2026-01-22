@@ -1,8 +1,10 @@
-import { BaseNetWorkViewModel } from "base";
-import { GoodsRepository, PageRepository } from "data";
-import { GoodsDetail, NetworkResponse } from "model";
-import { getRouteParams, GoodsIdParam } from "navigation";
+import { BaseNetWorkViewModel, BaseNetWorkUiState } from "base";
+import { CartRepository, GoodsRepository, PageRepository } from "data";
+import { Cart, CartGoodsSpec, GoodsDetail, GoodsIdRequest, GoodsSpec, NetworkResponse, SelectedGoods } from "model";
+import { getRouteParams, GoodsIdParam, OrderNavigator } from "navigation";
 import { GoodsRoutes } from "navigation/src/main/ets/goods/GoodsRoutes";
+import { RequestHelper } from "result";
+import { ToastUtils } from "util";
 
 /**
  * @file 商品详情页面 ViewModel
@@ -19,6 +21,26 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    * 累计滚动距离
    */
   private totalScrollOffset: number = 0;
+  /**
+   * 是否显示规格选择弹窗
+   */
+  @Trace
+  showSpecSelectModal: boolean = false;
+  /**
+   * 规格列表数据
+   */
+  @Trace
+  specList: GoodsSpec[] = [];
+  /**
+   * 规格列表网络请求状态
+   */
+  @Trace
+  specUiState: BaseNetWorkUiState = BaseNetWorkUiState.LOADING;
+  /**
+   * 当前选中的规格
+   */
+  @Trace
+  selectedSpec: GoodsSpec | null = null;
   /**
    * 页面仓库
    */
@@ -42,6 +64,111 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    */
   protected requestRepository(): Promise<NetworkResponse<GoodsDetail>> {
     return this.pageRepository.getGoodsDetail(this.goodsId);
+  }
+
+  /**
+   * 加载商品规格
+   */
+  loadGoodsSpecs() {
+    // 如果 ui 状态为成功，则不重复加载
+    if (this.specUiState === BaseNetWorkUiState.SUCCESS) {
+      return;
+    }
+
+    const params: GoodsIdRequest = new GoodsIdRequest();
+    params.goodsId = this.goodsId;
+    RequestHelper.repository <GoodsSpec[]>(this.goodsRepository.getGoodsSpecList(params))
+      .toast(false)
+      .start(() => {
+        this.specUiState = BaseNetWorkUiState.LOADING;
+      })
+      .execute()
+      .then((data: GoodsSpec[]) => {
+        this.specList = data;
+        setTimeout(()=>{
+          this.specUiState = BaseNetWorkUiState.SUCCESS;
+        },600)
+
+      })
+      .catch(() => {
+        this.specUiState = BaseNetWorkUiState.ERROR;
+      });
+  }
+
+  /**
+   * 选择规格
+   * @param {GoodsSpec} spec - 选中的规格
+   */
+  selectSpec(spec: GoodsSpec): void {
+    // 如果点击的是已选中的规格，则取消选择
+    if (this.selectedSpec?.id === spec.id) {
+      this.selectedSpec = null;
+    } else {
+      this.selectedSpec = spec;
+    }
+  }
+
+  /**
+   * 加入购物车
+   * @param {SelectedGoods} selectedGoods - 已选商品信息
+   */
+  async addToCart(selectedGoods: SelectedGoods): Promise<void> {
+    const cartRepository = new CartRepository();
+
+    // 检查购物车中是否已存在该商品
+    const existingCart = await cartRepository.getCartByGoodsId(selectedGoods.goodsId);
+
+    if (existingCart && selectedGoods.spec) {
+      // 商品已存在，检查是否有相同规格
+      const existingSpec = existingCart.spec.find(s => s.id === selectedGoods.spec?.id);
+
+      if (existingSpec) {
+        // 规格已存在，更新数量
+        const newCount = existingSpec.count + selectedGoods.count;
+        await cartRepository.updateCartSpecCount(selectedGoods.goodsId, selectedGoods.spec.id, newCount);
+      } else {
+        // 规格不存在，添加新规格
+        const newSpec = new CartGoodsSpec();
+        newSpec.id = selectedGoods.spec.id;
+        newSpec.goodsId = selectedGoods.goodsId;
+        newSpec.name = selectedGoods.spec.name;
+        newSpec.price = selectedGoods.spec.price;
+        newSpec.stock = selectedGoods.spec.stock;
+        newSpec.count = selectedGoods.count;
+        newSpec.images = selectedGoods.spec.images;
+        existingCart.spec.push(newSpec);
+        await cartRepository.updateCart(existingCart);
+      }
+    } else {
+      // 商品不存在，创建新的购物车项
+      const newCart = new Cart();
+      newCart.goodsId = selectedGoods.goodsId;
+      newCart.goodsName = selectedGoods.goodsInfo?.title ?? "";
+      newCart.goodsMainPic = selectedGoods.goodsInfo?.mainPic ?? "";
+
+      if (selectedGoods.spec) {
+        const newSpec = new CartGoodsSpec();
+        newSpec.id = selectedGoods.spec.id;
+        newSpec.goodsId = selectedGoods.goodsId;
+        newSpec.name = selectedGoods.spec.name;
+        newSpec.price = selectedGoods.spec.price;
+        newSpec.stock = selectedGoods.spec.stock;
+        newSpec.count = selectedGoods.count;
+        newSpec.images = selectedGoods.spec.images;
+        newCart.spec = [newSpec];
+      }
+
+      await cartRepository.addToCart(newCart);
+    }
+    ToastUtils.showSuccess($r("app.string.add_to_cart_success"));
+  }
+
+  /**
+   * 立即购买
+   * @param {SelectedGoods} _selectedGoods - 已选商品信息（暂未使用）
+   */
+  buyNow(_selectedGoods: SelectedGoods): void {
+    OrderNavigator.toConfirm();
   }
 
   /**
@@ -75,5 +202,23 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
       return 255;
     }
     return alpha;
+  }
+
+  /**
+   * 显示规格选择弹窗
+   * @returns {void} 无返回值
+   */
+  showSpecModal(): void {
+    this.showSpecSelectModal = true;
+    // 显示弹窗时加载规格数据
+    this.loadGoodsSpecs();
+  }
+
+  /**
+   * 关闭规格选择弹窗
+   * @returns {void} 无返回值
+   */
+  dismissSpecModal(): void {
+    this.showSpecSelectModal = false;
   }
 }

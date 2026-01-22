@@ -99,6 +99,8 @@ export { GoodsCommentPageRequest } from './src/main/ets/request/GoodsCommentPage
 
 export { GoodsCommentSubmitRequest } from './src/main/ets/request/GoodsCommentSubmitRequest';
 
+export { GoodsIdRequest } from './src/main/ets/request/GoodsIdRequest';
+
 export { GoodsSearchRequest } from './src/main/ets/request/GoodsSearchRequest';
 
 export { MessagePageRequest } from './src/main/ets/request/MessagePageRequest';

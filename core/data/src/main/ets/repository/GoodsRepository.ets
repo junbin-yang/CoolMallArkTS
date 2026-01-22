@@ -8,6 +8,7 @@ import {
   GoodsSearchRequest,
   GoodsCommentSubmitRequest,
   GoodsCommentPageRequest,
+  GoodsIdRequest,
   NetworkPageData,
   NetworkResponse
 } from "model";
@@ -40,10 +41,10 @@ export class GoodsRepository {
 
   /**
    * 查询商品规格列表
-   * @param params 查询参数
-   * @returns 商品规格列表
+   * @param {GoodsIdRequest} params - 商品 ID 请求参数
+   * @returns {Promise<NetworkResponse<GoodsSpec[]>>} 商品规格列表
    */
-  async getGoodsSpecList(params: Record<string, number>): Promise<NetworkResponse<GoodsSpec[]>> {
+  async getGoodsSpecList(params: GoodsIdRequest): Promise<NetworkResponse<GoodsSpec[]>> {
     return this.networkDataSource.getGoodsSpecList(params);
   }
 

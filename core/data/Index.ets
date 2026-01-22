@@ -11,6 +11,8 @@ export { AddressRepository } from './src/main/ets/repository/AddressRepository';
 
 export { BannerRepository } from './src/main/ets/repository/BannerRepository';
 
+export { CartRepository } from './src/main/ets/repository/CartRepository';
+
 export { CommonRepository } from './src/main/ets/repository/CommonRepository';
 
 export { CouponRepository } from './src/main/ets/repository/CouponRepository';

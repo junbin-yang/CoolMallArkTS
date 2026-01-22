@@ -52,3 +52,7 @@ export { AddressCard } from "./src/main/ets/component/address/AddressCard";
 export { AddressActionButton } from "./src/main/ets/component/address/AddressActionButton";
 
 export { AppBottomButton } from "./src/main/ets/component/bottombar/AppBottomButton";
+
+export { BottomModal } from "./src/main/ets/component/modal/BottomModal";
+
+export { SpecSelectModal } from "./src/main/ets/component/modal/SpecSelectModal";

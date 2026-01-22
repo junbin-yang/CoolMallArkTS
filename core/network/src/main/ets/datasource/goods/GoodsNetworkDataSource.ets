@@ -8,7 +8,8 @@ import {
   NetworkResponse,
   GoodsSearchRequest,
   GoodsCommentSubmitRequest,
-  GoodsCommentPageRequest
+  GoodsCommentPageRequest,
+  GoodsIdRequest
 } from "model";
 
 /**
@@ -25,10 +26,10 @@ export interface GoodsNetworkDataSource {
 
   /**
    * 查询商品规格列表
-   * @param params 查询参数
-   * @returns 商品规格列表响应
+   * @param {GoodsIdRequest} params - 商品 ID 请求参数
+   * @returns {Promise<NetworkResponse<GoodsSpec[]>>} 商品规格列表响应
    */
-  getGoodsSpecList(params: Record<string, number>): Promise<NetworkResponse<GoodsSpec[]>>;
+  getGoodsSpecList(params: GoodsIdRequest): Promise<NetworkResponse<GoodsSpec[]>>;
 
   /**
    * 查询搜索关键词列表
