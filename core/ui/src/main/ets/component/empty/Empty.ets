@@ -11,7 +11,7 @@ export struct Empty {
    * 描述文案
    */
   @Param
-  description: ResourceStr = "暂无内容";
+  description: ResourceStr = $r("app.string.empty_error");
   /**
    * 占位图资源
    */
@@ -22,7 +22,7 @@ export struct Empty {
    * 操作按钮文案（仅当 onAction 存在时展示）
    */
   @Param
-  actionText: ResourceStr = "重试";
+  actionText: ResourceStr = $r("app.string.click_retry");
   /**
    * 操作按钮点击回调（不传则不展示按钮）
    */
@@ -63,13 +63,13 @@ export struct Empty {
         plain: true,
         hairline: true,
         round: true,
-        btnWidth: P70
-      })
-        .onClick(() => {
+        btnWidth: P70,
+        onBtnClick: () => {
           if (this.onAction) {
             this.onAction();
           }
-        });
+        }
+      });
     }
   }
 

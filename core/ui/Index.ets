@@ -47,6 +47,10 @@ export { GoodsListItem } from "./src/main/ets/component/goods/GoodsListItem";
 
 export { GoodsGridItem } from "./src/main/ets/component/goods/GoodsGridItem";
 
+export { OrderGoodsItem } from "./src/main/ets/component/goods/OrderGoodsItem";
+
+export { OrderGoodsCard } from "./src/main/ets/component/goods/OrderGoodsCard";
+
 export { AddressCard } from "./src/main/ets/component/address/AddressCard";
 
 export { AddressActionButton } from "./src/main/ets/component/address/AddressActionButton";

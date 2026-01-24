@@ -85,10 +85,7 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
       .execute()
       .then((data: GoodsSpec[]) => {
         this.specList = data;
-        setTimeout(()=>{
-          this.specUiState = BaseNetWorkUiState.SUCCESS;
-        },600)
-
+        this.specUiState = BaseNetWorkUiState.SUCCESS;
       })
       .catch(() => {
         this.specUiState = BaseNetWorkUiState.ERROR;

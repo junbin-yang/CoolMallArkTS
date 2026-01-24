@@ -12,7 +12,7 @@ export struct EmptyCart {
    */
   build(): void {
     Empty({
-      description: "购物车空空如也",
+      description: $r("app.string.empty_cart"),
       imageRes: $r("app.media.ic_empty_cart")
     });
   }

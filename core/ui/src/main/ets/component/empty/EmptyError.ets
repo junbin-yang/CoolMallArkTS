@@ -10,13 +10,13 @@ export struct EmptyError {
    * 描述文案
    */
   @Param
-  description: ResourceStr = "出错了";
+  description: ResourceStr = $r("app.string.empty_error");
 
   /**
    * 操作按钮文案（仅当 onAction 存在时展示）
    */
   @Param
-  actionText: ResourceStr = "重试";
+  actionText: ResourceStr = $r("app.string.click_retry");
 
   /**
    * 操作按钮点击回调（不传则不展示按钮）

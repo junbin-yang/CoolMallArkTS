@@ -12,7 +12,7 @@ export struct EmptyData {
    */
   build(): void {
     Empty({
-      description: "暂无数据",
+      description: $r("app.string.empty_data"),
       imageRes: $r("app.media.ic_empty_data")
     });
   }

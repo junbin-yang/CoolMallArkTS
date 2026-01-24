@@ -65,7 +65,7 @@ export struct MainPage {
       }.tabBar(this.tabBarItem(1));
 
       TabContent() {
-        CartPage();
+        CartPage({ currentPageIndex: this.vm.currentPageIndex });
       }.tabBar(this.tabBarItem(2));
 
       TabContent() {

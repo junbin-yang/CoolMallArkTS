@@ -169,7 +169,12 @@ export struct GoodsDetailPage {
       ListItem() {
         GoodsInfoCard({
           goodsInfo: this.vm.data?.goodsInfo ?? new Goods(),
-          coupons: this.vm.data?.coupon ?? []
+          coupons: this.vm.data?.coupon ?? [],
+          selectedSpec: this.vm.selectedSpec ?? undefined,
+          onSpecClick: (): void => this.vm.showSpecModal(),
+          onCouponClick: (): void => {
+            // TODO: 实现优惠券弹窗功能
+          }
         });
       }
 
