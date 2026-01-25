@@ -1,6 +1,8 @@
 import { BaseViewModel } from "base";
-import { CartRepository } from "data";
-import { Cart, CartGoodsSpec } from "model";
+import { CartRepository, OrderCacheStoreRepository } from "data";
+import { Cart, CartGoodsSpec, Goods, GoodsSpec, SelectedGoods } from "model";
+import { OrderNavigator } from "navigation";
+import { ToastUtils } from "util";
 
 /**
  * @file 购物车页面 ViewModel
@@ -12,6 +14,10 @@ export default class CartViewModel extends BaseViewModel {
    * 购物车仓库
    */
   private readonly cartRepository: CartRepository = new CartRepository();
+  /**
+   * 订单缓存本地存储仓库
+   */
+  private readonly orderCacheStoreRepository: OrderCacheStoreRepository = new OrderCacheStoreRepository();
   /**
    * 购物车列表
    */
@@ -239,11 +245,103 @@ export default class CartViewModel extends BaseViewModel {
 
   /**
    * 结算按钮点击
-   * @returns {void} 无返回值
+   * @returns {Promise<void>} Promise<void>
    */
-  onSettleClick(): void {
-    // TODO: 跳转到订单确认页面
-    console.log("结算按钮点击");
+  async onSettleClick(): Promise<void> {
+    // 检查是否有选中的商品
+    if (this.selectedSpecIds.size === 0) {
+      ToastUtils.showError($r("app.string.please_select_settlement_goods"));
+      return;
+    }
+
+    // 1. 获取选中的购物车项
+    const selectedCarts = this.getSelectedCarts();
+    if (selectedCarts.length === 0) {
+      ToastUtils.showError($r("app.string.get_selected_goods_failed"));
+      return;
+    }
+
+    // 2. 缓存选中的购物车项
+    await this.orderCacheStoreRepository.saveCarts(selectedCarts);
+
+    // 3. 将购物车项转换为 SelectedGoods
+    const selectedGoodsList = this.convertCartsToSelectedGoods(selectedCarts);
+
+    // 4. 缓存 SelectedGoods
+    await this.orderCacheStoreRepository.saveSelectedGoodsList(selectedGoodsList);
+
+    // 5. 导航到订单确认页面
+    OrderNavigator.toConfirm();
+  }
+
+  /**
+   * 获取选中的购物车项
+   * @returns {Cart[]} 选中的购物车列表
+   */
+  private getSelectedCarts(): Cart[] {
+    const result: Cart[] = [];
+
+    for (const cart of this.cartList) {
+      // 获取该商品下选中的规格
+      const selectedSpecs: CartGoodsSpec[] = [];
+      for (const spec of cart.spec) {
+        const key = `${cart.goodsId}_${spec.id}`;
+        if (this.selectedSpecIds.has(key)) {
+          selectedSpecs.push(spec);
+        }
+      }
+
+      // 如果有选中的规格，创建新的购物车项
+      if (selectedSpecs.length > 0) {
+        const newCart = new Cart();
+        newCart.goodsId = cart.goodsId;
+        newCart.goodsName = cart.goodsName;
+        newCart.goodsMainPic = cart.goodsMainPic;
+        newCart.spec = selectedSpecs;
+        result.push(newCart);
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * 将购物车项转换为 SelectedGoods
+   * @param {Cart[]} carts 购物车列表
+   * @returns {SelectedGoods[]} 转换后的 SelectedGoods 列表
+   */
+  private convertCartsToSelectedGoods(carts: Cart[]): SelectedGoods[] {
+    const result: SelectedGoods[] = [];
+
+    for (const cart of carts) {
+      for (const cartSpec of cart.spec) {
+        // 创建规格对象
+        const spec = new GoodsSpec();
+        spec.id = cartSpec.id;
+        spec.goodsId = cartSpec.goodsId;
+        spec.name = cartSpec.name;
+        spec.price = cartSpec.price;
+        spec.stock = cartSpec.stock;
+        spec.images = cartSpec.images;
+
+        // 创建商品信息对象
+        const goodsInfo = new Goods();
+        goodsInfo.id = cart.goodsId;
+        goodsInfo.title = cart.goodsName;
+        goodsInfo.mainPic = cart.goodsMainPic;
+
+        // 创建 SelectedGoods 对象
+        const selectedGoods = new SelectedGoods();
+        selectedGoods.goodsId = cart.goodsId;
+        selectedGoods.count = cartSpec.count;
+        selectedGoods.spec = spec;
+        selectedGoods.goodsInfo = goodsInfo;
+
+        result.push(selectedGoods);
+      }
+    }
+
+    return result;
   }
 
   /**

@@ -32,3 +32,5 @@ export { AccountStoreRepository } from './src/main/ets/repository/AccountStoreRe
 export { UserInfoRepository } from './src/main/ets/repository/UserInfoRepository';
 
 export { TokenStoreRepository } from './src/main/ets/repository/TokenStoreRepository';
+
+export { OrderCacheStoreRepository } from './src/main/ets/repository/OrderCacheStoreRepository';

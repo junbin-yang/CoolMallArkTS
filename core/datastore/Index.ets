@@ -10,3 +10,7 @@ export { AccountStoreDataSourceImpl } from "./src/main/ets/datasource/account/Ac
 export { TokenStoreDataSource } from "./src/main/ets/datasource/token/TokenStoreDataSource";
 
 export { TokenStoreDataSourceImpl } from "./src/main/ets/datasource/token/TokenStoreDataSourceImpl";
+
+export { OrderCacheStoreDataSource } from "./src/main/ets/datasource/ordercache/OrderCacheStoreDataSource";
+
+export { OrderCacheStoreDataSourceImpl } from "./src/main/ets/datasource/ordercache/OrderCacheStoreDataSourceImpl";

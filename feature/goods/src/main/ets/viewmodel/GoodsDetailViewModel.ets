@@ -1,5 +1,5 @@
 import { BaseNetWorkViewModel, BaseNetWorkUiState } from "base";
-import { CartRepository, GoodsRepository, PageRepository } from "data";
+import { CartRepository, GoodsRepository, OrderCacheStoreRepository, PageRepository } from "data";
 import { Cart, CartGoodsSpec, GoodsDetail, GoodsIdRequest, GoodsSpec, NetworkResponse, SelectedGoods } from "model";
 import { getRouteParams, GoodsIdParam, OrderNavigator } from "navigation";
 import { GoodsRoutes } from "navigation/src/main/ets/goods/GoodsRoutes";
@@ -49,6 +49,10 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    * 商品仓库
    */
   private readonly goodsRepository: GoodsRepository = new GoodsRepository();
+  /**
+   * 订单缓存本地存储仓库
+   */
+  private readonly orderCacheStoreRepository: OrderCacheStoreRepository = new OrderCacheStoreRepository();
   /**
    * 路由参数
    */
@@ -162,9 +166,15 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
 
   /**
    * 立即购买
-   * @param {SelectedGoods} _selectedGoods - 已选商品信息（暂未使用）
+   * @param {SelectedGoods} selectedGoods - 已选商品信息
+   * @returns {Promise<void>} Promise<void>
    */
-  buyNow(_selectedGoods: SelectedGoods): void {
+  async buyNow(selectedGoods: SelectedGoods): Promise<void> {
+    // 保存已选商品列表到本地存储（存储为数组格式）
+    await this.orderCacheStoreRepository.saveSelectedGoodsList([selectedGoods]);
+    // 关闭规格选择弹窗
+    this.dismissSpecModal();
+    // 跳转到订单确认页面
     OrderNavigator.toConfirm();
   }
 

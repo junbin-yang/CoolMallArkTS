@@ -90,7 +90,9 @@ export struct GoodsDetailPage {
         selectedSpec: this.vm.selectedSpec,
         onSpecSelected: (spec): void => this.vm.selectSpec(spec),
         onAddToCart: async (selectedGoods): Promise<void> => await this.vm.addToCart(selectedGoods),
-        onBuyNow: (selectedGoods): void => this.vm.buyNow(selectedGoods),
+        onBuyNow: (selectedGoods): void => {
+          this.vm.buyNow(selectedGoods);
+        },
         onRetry: (): void => this.vm.loadGoodsSpecs()
       });
     }

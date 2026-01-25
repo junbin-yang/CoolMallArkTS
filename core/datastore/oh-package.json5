@@ -6,6 +6,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "util": "file:../util"
+    "util": "file:../util",
+    "model": "file:../model"
   }
 }
