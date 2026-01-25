@@ -76,11 +76,9 @@ export struct OrderConfirmPage {
         Column() {
           // 地址选择卡片
           AddressCard({
-            address: this.vm.data?.defaultAddress ?? null,
+            address: this.vm.data?.defaultAddress,
             addressSelected: true,
-            onTap: (): void => {
-              // TODO: 跳转到地址选择页面
-            }
+            onTap: (): void => this.vm.navigateToAddressSelection()
           });
 
           SpaceVerticalMedium();

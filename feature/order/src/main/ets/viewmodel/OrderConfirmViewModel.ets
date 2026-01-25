@@ -1,6 +1,7 @@
 import { BaseNetWorkViewModel } from "base";
 import { CartRepository, OrderCacheStoreRepository, PageRepository } from "data";
 import { Cart, CartGoodsSpec, ConfirmOrder, Coupon, NetworkResponse, SelectedGoods } from "model";
+import { UserNavigator, UserSelectAddressResult } from "navigation";
 
 /**
  * @file 订单确认页面 ViewModel
@@ -247,6 +248,19 @@ export default class OrderConfirmViewModel extends BaseNetWorkViewModel<ConfirmO
 
     this.discountAmount = discountValue;
     this.totalPrice = Math.max(this.originalPrice - discountValue, 0);
+  }
+
+  /**
+   * 跳转到地址选择页面
+   * @returns {void} 无返回值
+   */
+  navigateToAddressSelection(): void {
+    UserNavigator.toAddressList(true)
+      .then((result?: UserSelectAddressResult): void => {
+        if (result?.address) {
+          console.log(JSON.stringify(result.address))
+        }
+      });
   }
 
   /**

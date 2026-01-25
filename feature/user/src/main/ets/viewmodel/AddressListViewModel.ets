@@ -55,6 +55,7 @@ export default class AddressListViewModel extends BaseNetWorkListViewModel<Addre
 
   /**
    * 地址卡片点击回调
+   * 根据当前模式决定是编辑地址还是选择地址
    * @param {Address} address - 点击的地址
    * @returns {void} 无返回值
    */

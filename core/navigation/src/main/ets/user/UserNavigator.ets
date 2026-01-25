@@ -2,6 +2,7 @@ import { navigateTo, navigateToForResult } from "../NavigationService";
 import { RefreshResult } from "../NavigationResult";
 import { UserRoutes } from "./UserRoutes";
 import { UserAddressDetailParam, UserAddressListParam } from "./UserParam";
+import { UserSelectAddressResult } from "./UserResult";
 
 /**
  * @file 用户模块导航封装
@@ -19,11 +20,11 @@ export class UserNavigator {
   /**
    * 跳转到收货地址列表
    * @param {boolean} isSelectMode - 是否为选择模式（默认 false）
-   * @returns {void} 无返回值
+   * @returns {Promise<UserSelectAddressResult | undefined>} 返回选中的地址结果 Promise
    */
-  static toAddressList(isSelectMode: boolean = false): void {
+  static toAddressList(isSelectMode: boolean = false): Promise<UserSelectAddressResult | undefined> {
     const params: UserAddressListParam = { isSelectMode };
-    navigateTo(UserRoutes.AddressList, params);
+    return navigateToForResult<UserSelectAddressResult>(UserRoutes.AddressList, params);
   }
 
   /**

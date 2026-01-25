@@ -51,7 +51,9 @@ export default class MeViewModel extends BaseViewModel {
       title: $r("app.string.shipping_address"),
       icon: $r("app.media.ic_location_fill"),
       iconColor: $r("app.color.main_address_icon"),
-      onClick: (): void => UserNavigator.toAddressList(),
+      onClick: (): void => {
+        UserNavigator.toAddressList();
+      },
       showDivider: true
     },
     {
