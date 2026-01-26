@@ -85,6 +85,8 @@ export { SelectedGoods } from './src/main/ets/entity/SelectedGoods';
 
 export { UserContributor } from './src/main/ets/entity/UserContributor';
 
+export { AlipayPayParams } from './src/main/ets/request/AlipayPayParams';
+
 export { CancelOrderRequest } from './src/main/ets/request/CancelOrderRequest';
 
 export { Comment as CommentRequest } from './src/main/ets/request/Comment';
