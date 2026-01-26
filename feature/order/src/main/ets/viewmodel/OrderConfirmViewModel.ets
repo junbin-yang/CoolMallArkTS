@@ -1,7 +1,19 @@
 import { BaseNetWorkViewModel } from "base";
-import { CartRepository, OrderCacheStoreRepository, PageRepository } from "data";
-import { Cart, CartGoodsSpec, ConfirmOrder, Coupon, NetworkResponse, SelectedGoods } from "model";
-import { UserNavigator, UserSelectAddressResult } from "navigation";
+import { CartRepository, OrderCacheStoreRepository, OrderRepository, PageRepository } from "data";
+import {
+  Address,
+  Cart,
+  CartGoodsSpec,
+  ConfirmOrder,
+  Coupon,
+  CreateOrderRequest,
+  NetworkResponse,
+  Order,
+  SelectedGoods
+} from "model";
+import { OrderNavigator, UserNavigator, UserSelectAddressResult } from "navigation";
+import { RequestHelper } from "result";
+import { ContextUtil, ToastUtils } from "util";
 
 /**
  * @file 订单确认页面 ViewModel
@@ -17,6 +29,10 @@ export default class OrderConfirmViewModel extends BaseNetWorkViewModel<ConfirmO
    * 页面仓库
    */
   private readonly pageRepository: PageRepository = new PageRepository();
+  /**
+   * 订单仓库
+   */
+  private readonly orderRepository: OrderRepository = new OrderRepository();
   /**
    * 购物车仓库
    */
@@ -258,7 +274,7 @@ export default class OrderConfirmViewModel extends BaseNetWorkViewModel<ConfirmO
     UserNavigator.toAddressList(true)
       .then((result?: UserSelectAddressResult): void => {
         if (result?.address) {
-          console.log(JSON.stringify(result.address))
+          this.updateSelectedAddress(result.address);
         }
       });
   }
@@ -268,7 +284,65 @@ export default class OrderConfirmViewModel extends BaseNetWorkViewModel<ConfirmO
    * @returns {void} 无返回值
    */
   onSubmitOrderClick(): void {
-    // TODO: 实现提交订单逻辑
+    const addressId: number | undefined = this.data?.defaultAddress?.id;
+    if (!addressId) {
+      ToastUtils.showError($r("app.string.select_address"));
+      return;
+    }
+
+    const title: string = this.getPurchaseTitle();
+    const params: CreateOrderRequest = new CreateOrderRequest({
+      data: {
+        addressId,
+        goodsList: this.selectedGoodsList,
+        title: title.length > 0 ? title : undefined,
+        remark: this.remark.length > 0 ? this.remark : undefined,
+        couponId: this.selectedCoupon?.id
+      }
+    });
+
+    RequestHelper.repository<Order>(this.orderRepository.createOrder(params))
+      .execute()
+      .then((order: Order): void => {
+        if (this.isFromCart) {
+          void this.deleteCartItems();
+        }
+        this.navigateToPayment(order);
+      });
+  }
+
+  /**
+   * 跳转到支付页面
+   * @param {Order} order - 订单信息
+   * @returns {void} 无返回值
+   */
+  private navigateToPayment(order: Order): void {
+    const paymentPrice: number = order.price - order.discountPrice;
+    OrderNavigator.toPay(order.id, paymentPrice, "confirm");
+  }
+
+  /**
+   * 更新已选择的地址
+   * @param {Address} address - 选择的地址
+   * @returns {void} 无返回值
+   */
+  private updateSelectedAddress(address: Address): void {
+    const currentData: ConfirmOrder = this.data ? new ConfirmOrder(this.data) : new ConfirmOrder();
+    currentData.defaultAddress = address;
+    this.data = currentData;
+  }
+
+  /**
+   * 获取提交订单的标题
+   * @returns {string} 标题文案
+   */
+  private getPurchaseTitle(): string {
+    try {
+      const titleRes: Resource = $r("app.string.purchase_goods");
+      return ContextUtil.getUIAbilityCtx().resourceManager.getStringSync(titleRes.id);
+    } catch (error) {
+      return "";
+    }
   }
 
   /**
