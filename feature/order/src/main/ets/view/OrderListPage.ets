@@ -1,4 +1,8 @@
-import { AppNavDestination } from "ui";
+import { P100 } from "designsystem";
+import { Order } from "model";
+import { OrderNavigator } from "navigation";
+import { AppNavDestination, BaseNetWorkListView, RefreshLayout } from "ui";
+import { OrderCard } from "../component/OrderCard";
 import OrderListViewModel from "../viewmodel/OrderListViewModel";
 
 /**
@@ -12,6 +16,10 @@ export struct OrderListPage {
    */
   @Local
   private vm: OrderListViewModel = new OrderListViewModel();
+  /**
+   * 列表滚动控制器
+   */
+  private listScroller: Scroller = new Scroller();
 
   /**
    * 构建订单列表页面
@@ -19,10 +27,14 @@ export struct OrderListPage {
    */
   build() {
     AppNavDestination({
-      title: "订单列表",
+      title: $r("app.string.order_list"),
       viewModel: this.vm
     }) {
-      this.OrderListContent();
+      BaseNetWorkListView({
+        uiState: this.vm.uiState,
+        onRetry: (): void => this.vm.retryRequest(),
+        content: (): void => this.OrderListContent()
+      });
     }
   }
 
@@ -32,6 +44,44 @@ export struct OrderListPage {
    */
   @Builder
   private OrderListContent() {
-    Text("订单列表页面内容视图")
+    RefreshLayout({
+      loading: this.vm.isLoading,
+      isEnableSlideUp: this.vm.isEnableSlideUp,
+      scroller: this.listScroller,
+      onRefresh: (direction): void => this.vm.onRefreshDirection(direction)
+    }) {
+      List({ space: 12, scroller: this.listScroller }) {
+        ForEach(this.vm.listData, (item: Order): void => {
+          ListItem() {
+            this.OrderListItem(item);
+          }
+        }, (item: Order): string => `${item.id}`);
+      }
+      .width(P100)
+      .height(P100)
+      .padding({
+        left: $r("app.float.space_horizontal_medium"),
+        right: $r("app.float.space_horizontal_medium")
+      })
+      .edgeEffect(EdgeEffect.None);
+    }
+  }
+
+  /**
+   * 渲染订单列表项
+   * @param {Order} item - 订单数据
+   * @returns {void} 无返回值
+   */
+  @Builder
+  private OrderListItem(item: Order): void {
+    OrderCard({
+      order: item,
+      toOrderDetail: (orderId: number): void => OrderNavigator.toDetail(orderId),
+      toPay: (): void => this.vm.toPay(item),
+      toGoodsDetail: (): void => this.vm.toGoodsDetail(item),
+      toLogistics: (): void => OrderNavigator.toLogistics(item.id),
+      toComment: (): void => this.vm.toComment(item),
+      toRefund: (): void => OrderNavigator.toRefund(item.id)
+    });
   }
 }
