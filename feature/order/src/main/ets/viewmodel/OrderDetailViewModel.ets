@@ -1,8 +1,19 @@
-import { BaseNetWorkViewModel } from "base";
-import { OrderRepository } from "data";
-import { Cart, CartGoodsSpec, NetworkResponse, Order, OrderGoods } from "model";
+import { BaseNetWorkUiState, BaseNetWorkViewModel } from "base";
+import { CommonRepository, OrderRepository } from "data";
+import {
+  CancelOrderRequest,
+  Cart,
+  CartGoodsSpec,
+  DictDataRequest,
+  DictDataResponse,
+  DictItem,
+  NetworkResponse,
+  Order,
+  OrderGoods
+} from "model";
 import { GoodsNavigator, OrderIdParam, OrderNavigator, getRouteParams } from "navigation";
 import { OrderRoutes } from "navigation/src/main/ets/order/OrderRoutes";
+import { RequestHelper } from "result";
 
 /**
  * @file 订单详情页面 ViewModel
@@ -14,6 +25,10 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
    * 订单仓库
    */
   private readonly repository: OrderRepository = new OrderRepository();
+  /**
+   * 公共仓库
+   */
+  private readonly commonRepository: CommonRepository = new CommonRepository();
   /**
    * 路由参数
    */
@@ -27,6 +42,26 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
    */
   @Trace
   cartList: Cart[] = [];
+  /**
+   * 取消原因弹窗显示状态
+   */
+  @Trace
+  cancelModalVisible: boolean = false;
+  /**
+   * 取消原因弹窗网络状态
+   */
+  @Trace
+  cancelReasonsUiState: BaseNetWorkUiState = BaseNetWorkUiState.LOADING;
+  /**
+   * 取消原因列表
+   */
+  @Trace
+  cancelReasonList: DictItem[] = [];
+  /**
+   * 选中的取消原因
+   */
+  @Trace
+  selectedCancelReason: DictItem | null = null;
 
   /**
    * 请求订单详情数据
@@ -80,6 +115,72 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
       return;
     }
     GoodsNavigator.toDetail(goodsId);
+  }
+
+  /**
+   * 显示取消原因选择弹窗
+   * @returns {void} 无返回值
+   */
+  showCancelModal(): void {
+    this.cancelModalVisible = true;
+    this.loadCancelReasons();
+  }
+
+  /**
+   * 隐藏取消原因选择弹窗
+   * @returns {void} 无返回值
+   */
+  hideCancelModal(): void {
+    this.cancelModalVisible = false;
+  }
+
+  /**
+   * 选择取消原因
+   * @param {DictItem} reason - 取消原因
+   * @returns {void} 无返回值
+   */
+  selectCancelReason(reason: DictItem): void {
+    this.selectedCancelReason = reason;
+  }
+
+  /**
+   * 加载取消原因字典数据
+   * @returns {void} 无返回值
+   */
+  loadCancelReasons(): void {
+    if (this.cancelReasonsUiState === BaseNetWorkUiState.SUCCESS && this.cancelReasonList.length > 0) {
+      return;
+    }
+    const params: DictDataRequest = new DictDataRequest();
+    params.types = ["orderCancelReason"];
+    RequestHelper.repository<DictDataResponse>(this.commonRepository.getDictData(params))
+      .toast(false)
+      .start((): void => {
+        this.cancelReasonsUiState = BaseNetWorkUiState.LOADING;
+      })
+      .execute()
+      .then((data: DictDataResponse): void => {
+        this.cancelReasonList = data.orderCancelReason ?? [];
+        this.cancelReasonsUiState = BaseNetWorkUiState.SUCCESS;
+      })
+      .catch((): void => {
+        this.cancelReasonList = [];
+        this.cancelReasonsUiState = BaseNetWorkUiState.ERROR;
+      });
+  }
+
+  /**
+   * 确认取消订单
+   * @returns {void} 无返回值
+   */
+  confirmCancelOrder(): void {
+    const params: CancelOrderRequest = new CancelOrderRequest();
+    params.orderId = this.orderId;
+    params.remark = this.selectedCancelReason?.name ?? "";
+    RequestHelper.repository<boolean>(this.repository.cancelOrder(params))
+      .loading(true)
+      .execute()
+      .then((): void => this.retryRequest());
   }
 
   /**

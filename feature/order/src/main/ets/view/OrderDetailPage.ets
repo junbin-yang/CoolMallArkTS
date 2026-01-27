@@ -8,10 +8,18 @@ import {
   SpaceHorizontalXSmall,
   SpaceVerticalMedium
 } from "designsystem";
-import { Cart, Order } from "model";
+import { Cart, DictItem, Order } from "model";
 import { OrderNavigator } from "navigation";
 import { getWindowSafeAreaState, WindowSafeAreaState } from "state";
-import { AddressCard, AppNavDestination, BaseNetWorkView, Card, OrderGoodsCard, TitleWithLine } from "ui";
+import {
+  AddressCard,
+  AppNavDestination,
+  BaseNetWorkView,
+  Card,
+  DictSelectModal,
+  OrderGoodsCard,
+  TitleWithLine
+} from "ui";
 import { IBestCell, IBestCellGroup, IBestPrice } from "ibestui";
 import { OrderButtons } from "../component/OrderButtons";
 import OrderDetailViewModel from "../viewmodel/OrderDetailViewModel";
@@ -69,6 +77,19 @@ export struct OrderDetailPage {
         this.BottomBar();
       }
     }
+
+    // 取消订单弹窗
+    DictSelectModal({
+      visible: this.vm.cancelModalVisible,
+      title: $r("app.string.select_cancel_reason"),
+      uiState: this.vm.cancelReasonsUiState,
+      dictList: this.vm.cancelReasonList,
+      selectedItem: this.vm.selectedCancelReason,
+      onDismiss: (): void => this.vm.hideCancelModal(),
+      onItemSelected: (item: DictItem): void => this.vm.selectCancelReason(item),
+      onConfirm: (): void => this.vm.confirmCancelOrder(),
+      onRetry: (): void => this.vm.loadCancelReasons()
+    });
   }
 
   /**
@@ -328,6 +349,7 @@ export struct OrderDetailPage {
       }) {
         OrderButtons({
           order: this.getOrderData(),
+          onCancelClick: (): void => this.vm.showCancelModal(),
           onPayClick: (): void => this.vm.toPay(),
           onRefundClick: (): void => OrderNavigator.toRefund(this.getOrderId()),
           onLogisticsClick: (): void => OrderNavigator.toLogistics(this.getOrderId()),

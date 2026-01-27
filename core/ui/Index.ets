@@ -60,3 +60,5 @@ export { AppBottomButton } from "./src/main/ets/component/bottombar/AppBottomBut
 export { BottomModal } from "./src/main/ets/component/modal/BottomModal";
 
 export { SpecSelectModal } from "./src/main/ets/component/modal/SpecSelectModal";
+
+export { DictSelectModal } from "./src/main/ets/component/modal/DictSelectModal";

@@ -6,17 +6,19 @@ export class CancelOrderRequest {
   /**
    * 订单ID
    */
-  orderId: number;
+  orderId: number = 0;
   /**
    * 取消原因
    */
-  remark: string;
+  remark: string = "";
 
   /**
    * @param {CancelOrderRequest} init - 初始化数据
    */
-  constructor(init: CancelOrderRequest) {
-    this.orderId = init.orderId;
-    this.remark = init.remark;
+  constructor(init?: CancelOrderRequest) {
+    if (init) {
+      this.orderId = init.orderId;
+      this.remark = init.remark;
+    }
   }
 }
