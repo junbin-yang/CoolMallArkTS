@@ -20,7 +20,7 @@ import {
   OrderGoodsCard,
   TitleWithLine
 } from "ui";
-import { IBestCell, IBestCellGroup, IBestPrice } from "ibestui";
+import { IBestCell, IBestCellGroup, IBestDialog, IBestPrice } from "ibestui";
 import { OrderButtons } from "../component/OrderButtons";
 import OrderDetailViewModel from "../viewmodel/OrderDetailViewModel";
 
@@ -89,6 +89,18 @@ export struct OrderDetailPage {
       onItemSelected: (item: DictItem): void => this.vm.selectCancelReason(item),
       onConfirm: (): void => this.vm.confirmCancelOrder(),
       onRetry: (): void => this.vm.loadCancelReasons()
+    });
+
+    IBestDialog({
+      visible: this.vm.showConfirmDialog,
+      title: $r("app.string.confirm_receipt"),
+      message: $r("app.string.confirm_receipt_message"),
+      showCancelButton: true,
+      confirmButtonText: $r("app.string.confirm"),
+      cancelButtonText: $r("app.string.cancel"),
+      onConfirm: (): void => this.vm.confirmReceiveOrder(),
+      onCancel: (): void => this.vm.hideConfirmReceiveDialog(),
+      onClose: (): void => this.vm.hideConfirmReceiveDialog()
     });
   }
 
@@ -352,6 +364,7 @@ export struct OrderDetailPage {
           onCancelClick: (): void => this.vm.showCancelModal(),
           onPayClick: (): void => this.vm.toPay(),
           onRefundClick: (): void => OrderNavigator.toRefund(this.getOrderId()),
+          onConfirmClick: (): void => this.vm.showConfirmReceiveDialog(),
           onLogisticsClick: (): void => OrderNavigator.toLogistics(this.getOrderId()),
           onCommentClick: (): void => this.vm.toComment(),
           onRebuyClick: (): void => this.vm.toGoodsDetail()

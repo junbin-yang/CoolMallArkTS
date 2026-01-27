@@ -62,6 +62,11 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
    */
   @Trace
   selectedCancelReason: DictItem | null = null;
+  /**
+   * 确认收货弹窗显示状态
+   */
+  @Trace
+  showConfirmDialog: boolean = false;
 
   /**
    * 请求订单详情数据
@@ -181,6 +186,36 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
       .loading(true)
       .execute()
       .then((): void => this.retryRequest());
+  }
+
+  /**
+   * 显示确认收货弹窗
+   * @returns {void} 无返回值
+   */
+  showConfirmReceiveDialog(): void {
+    this.showConfirmDialog = true;
+  }
+
+  /**
+   * 隐藏确认收货弹窗
+   * @returns {void} 无返回值
+   */
+  hideConfirmReceiveDialog(): void {
+    this.showConfirmDialog = false;
+  }
+
+  /**
+   * 确认收货订单
+   * @returns {void} 无返回值
+   */
+  confirmReceiveOrder(): void {
+    RequestHelper.repository<boolean>(this.repository.confirmReceive(this.orderId))
+      .loading(true)
+      .execute()
+      .then((): void => {
+        this.retryRequest();
+        this.hideConfirmReceiveDialog();
+      });
   }
 
   /**
