@@ -195,6 +195,18 @@
     {
       "name": "logout",
       "value": "退出登录"
+    },
+    {
+      "name": "logout_confirm_title",
+      "value": "退出登录"
+    },
+    {
+      "name": "logout_confirm_message",
+      "value": "确认退出当前账号吗？"
+    },
+    {
+      "name": "avatar_label",
+      "value": "用户头像"
     }
   ]
 }

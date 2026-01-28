@@ -195,6 +195,18 @@
     {
       "name": "logout",
       "value": "Logout"
+    },
+    {
+      "name": "logout_confirm_title",
+      "value": "Logout"
+    },
+    {
+      "name": "logout_confirm_message",
+      "value": "Are you sure you want to log out?"
+    },
+    {
+      "name": "avatar_label",
+      "value": "User avatar"
     }
   ]
 }
