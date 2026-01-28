@@ -17,6 +17,7 @@ import {
   BaseNetWorkView,
   Card,
   DictSelectModal,
+  OrderGoodsModal,
   OrderGoodsCard,
   TitleWithLine
 } from "ui";
@@ -101,6 +102,24 @@ export struct OrderDetailPage {
       onConfirm: (): void => this.vm.confirmReceiveOrder(),
       onCancel: (): void => this.vm.hideConfirmReceiveDialog(),
       onClose: (): void => this.vm.hideConfirmReceiveDialog()
+    });
+
+    OrderGoodsModal({
+      visible: this.vm.rebuyModalVisible,
+      title: $r("app.string.select_goods_to_buy"),
+      buttonText: $r("app.string.rebuy"),
+      cartList: this.vm.cartList,
+      onDismiss: (): void => this.vm.hideRebuyModal(),
+      onItemButtonClick: (goodsId: number): void => this.vm.toGoodsDetail(goodsId)
+    });
+
+    OrderGoodsModal({
+      visible: this.vm.commentModalVisible,
+      title: $r("app.string.select_goods_to_comment"),
+      buttonText: $r("app.string.go_to_comment"),
+      cartList: this.vm.cartList,
+      onDismiss: (): void => this.vm.hideCommentModal(),
+      onItemButtonClick: (goodsId: number): void => this.vm.toOrderCommentForGoods(goodsId)
     });
   }
 
@@ -366,8 +385,8 @@ export struct OrderDetailPage {
           onRefundClick: (): void => OrderNavigator.toRefund(this.getOrderId()),
           onConfirmClick: (): void => this.vm.showConfirmReceiveDialog(),
           onLogisticsClick: (): void => OrderNavigator.toLogistics(this.getOrderId()),
-          onCommentClick: (): void => this.vm.toComment(),
-          onRebuyClick: (): void => this.vm.toGoodsDetail()
+          onCommentClick: (): void => this.vm.handleOrderComment(),
+          onRebuyClick: (): void => this.vm.handleRebuy()
         });
       }
 

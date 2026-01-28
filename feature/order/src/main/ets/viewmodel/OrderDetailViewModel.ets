@@ -43,6 +43,16 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
   @Trace
   cartList: Cart[] = [];
   /**
+   * 再次购买弹窗显示状态
+   */
+  @Trace
+  rebuyModalVisible: boolean = false;
+  /**
+   * 商品评论弹窗显示状态
+   */
+  @Trace
+  commentModalVisible: boolean = false;
+  /**
    * 取消原因弹窗显示状态
    */
   @Trace
@@ -97,29 +107,95 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
   }
 
   /**
-   * 跳转订单评价页面
+   * 显示再次购买弹窗
    * @returns {void} 无返回值
    */
-  toComment(): void {
-    const order: Order = this.data ?? new Order();
-    const goodsId: number = this.getFirstGoodsId(order);
+  showRebuyModal(): void {
+    this.rebuyModalVisible = true;
+  }
+
+  /**
+   * 隐藏再次购买弹窗
+   * @returns {void} 无返回值
+   */
+  hideRebuyModal(): void {
+    this.rebuyModalVisible = false;
+  }
+
+  /**
+   * 显示商品评论弹窗
+   * @returns {void} 无返回值
+   */
+  showCommentModal(): void {
+    this.commentModalVisible = true;
+  }
+
+  /**
+   * 隐藏商品评论弹窗
+   * @returns {void} 无返回值
+   */
+  hideCommentModal(): void {
+    this.commentModalVisible = false;
+  }
+
+  /**
+   * 处理再次购买逻辑
+   * @returns {void} 无返回值
+   */
+  handleRebuy(): void {
+    if (this.cartList.length > 1) {
+      this.showRebuyModal();
+      return;
+    }
+    const goodsId: number = this.getFirstCartGoodsId();
     if (!goodsId) {
       return;
     }
-    OrderNavigator.toComment(order.id, goodsId);
+    this.toGoodsDetail(goodsId);
+  }
+
+  /**
+   * 处理订单评价逻辑
+   * @returns {void} 无返回值
+   */
+  handleOrderComment(): void {
+    if (this.cartList.length > 1) {
+      this.showCommentModal();
+      return;
+    }
+    const orderId: number = this.data?.id ?? 0;
+    const goodsId: number = this.getFirstCartGoodsId();
+    if (!orderId || !goodsId) {
+      return;
+    }
+    OrderNavigator.toComment(orderId, goodsId);
   }
 
   /**
    * 跳转商品详情页面（再次购买）
+   * @param {number} goodsId - 商品 ID
    * @returns {void} 无返回值
    */
-  toGoodsDetail(): void {
-    const order: Order = this.data ?? new Order();
-    const goodsId: number = this.getFirstGoodsId(order);
+  toGoodsDetail(goodsId: number): void {
     if (!goodsId) {
       return;
     }
+    this.hideRebuyModal();
     GoodsNavigator.toDetail(goodsId);
+  }
+
+  /**
+   * 跳转订单评价页面（指定商品）
+   * @param {number} goodsId - 商品 ID
+   * @returns {void} 无返回值
+   */
+  toOrderCommentForGoods(goodsId: number): void {
+    const orderId: number = this.data?.id ?? 0;
+    if (!orderId || !goodsId) {
+      return;
+    }
+    this.hideCommentModal();
+    OrderNavigator.toComment(orderId, goodsId);
   }
 
   /**
@@ -270,12 +346,11 @@ export default class OrderDetailViewModel extends BaseNetWorkViewModel<Order> {
   }
 
   /**
-   * 获取订单第一件商品 ID
-   * @param {Order} order - 订单信息
+   * 获取购物车第一件商品 ID
    * @returns {number} 商品 ID
    */
-  private getFirstGoodsId(order: Order): number {
-    const goods: OrderGoods | undefined = order.goodsList?.[0];
-    return goods?.goodsId ?? 0;
+  private getFirstCartGoodsId(): number {
+    const cart: Cart | undefined = this.cartList[0];
+    return cart?.goodsId ?? 0;
   }
 }

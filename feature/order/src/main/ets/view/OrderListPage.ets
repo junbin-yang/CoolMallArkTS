@@ -1,7 +1,7 @@
 import { P100 } from "designsystem";
 import { Order } from "model";
 import { OrderNavigator } from "navigation";
-import { AppNavDestination, BaseNetWorkListView, RefreshLayout } from "ui";
+import { AppNavDestination, BaseNetWorkListView, OrderGoodsModal, RefreshLayout } from "ui";
 import { OrderCard } from "../component/OrderCard";
 import OrderListViewModel from "../viewmodel/OrderListViewModel";
 
@@ -34,6 +34,23 @@ export struct OrderListPage {
         uiState: this.vm.uiState,
         onRetry: (): void => this.vm.retryRequest(),
         content: (): void => this.OrderListContent()
+      });
+      OrderGoodsModal({
+        visible: this.vm.rebuyModalVisible,
+        title: $r("app.string.select_goods_to_buy"),
+        buttonText: $r("app.string.rebuy"),
+        cartList: this.vm.rebuyCartList,
+        onDismiss: (): void => this.vm.hideRebuyModal(),
+        onItemButtonClick: (goodsId: number): void => this.vm.toGoodsDetailForRebuy(goodsId)
+      });
+
+      OrderGoodsModal({
+        visible: this.vm.commentModalVisible,
+        title: $r("app.string.select_goods_to_comment"),
+        buttonText: $r("app.string.go_to_comment"),
+        cartList: this.vm.commentCartList,
+        onDismiss: (): void => this.vm.hideCommentModal(),
+        onItemButtonClick: (goodsId: number): void => this.vm.toOrderCommentForGoods(goodsId)
       });
     }
   }
@@ -78,9 +95,9 @@ export struct OrderListPage {
       order: item,
       toOrderDetail: (orderId: number): void => OrderNavigator.toDetail(orderId),
       toPay: (): void => this.vm.toPay(item),
-      toGoodsDetail: (): void => this.vm.toGoodsDetail(item),
+      toGoodsDetail: (): void => this.vm.handleRebuy(item),
       toLogistics: (): void => OrderNavigator.toLogistics(item.id),
-      toComment: (): void => this.vm.toComment(item),
+      toComment: (): void => this.vm.handleOrderComment(item),
       toRefund: (): void => OrderNavigator.toRefund(item.id)
     });
   }
