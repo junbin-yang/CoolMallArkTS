@@ -56,12 +56,11 @@ export struct MePage {
 
   /**
    * 监听 main 页面当前选中的页面索引变化
+   * @returns {void} 无返回值
    */
   @Monitor('currentPageIndex')
-  onValueChange() {
-    if (this.currentPageIndex === 3) {
-      this.vm.getUserOrderStatistics()
-    }
+  onValueChange(): void {
+    this.vm.onMainTabSelected(this.currentPageIndex);
   }
 
   /**
@@ -102,7 +101,7 @@ export struct MePage {
         this.buildOrderSection();
       }
 
-      if (this.vm.recentFootprints.length > 0) {
+      if (this.vm.isFootprintSectionVisible()) {
         ListItem() {
           this.buildFootprintSection();
         }
@@ -398,11 +397,11 @@ export struct MePage {
         leftIconColor: $r("app.color.main_footprint_icon"),
         title: $r("app.string.my_footprint"),
         value: $r("app.string.view_all"),
-        hasBorder: false,
+        hasBorder: true,
         onTap: (): void => UserNavigator.toFootprint()
       });
 
-      List({ space: 8 }) {
+      List({ space: 12 }) {
         ForEach(this.vm.recentFootprints, (item: Footprint): void => {
           ListItem() {
             this.buildFootprintItem(item);
@@ -412,11 +411,7 @@ export struct MePage {
       .listDirection(Axis.Horizontal)
       .width(P100)
       .scrollBar(BarState.Off)
-      .padding({
-        left: $r("app.float.space_horizontal_medium"),
-        right: $r("app.float.space_horizontal_medium"),
-        bottom: $r("app.float.space_vertical_medium")
-      });
+      .padding($r("app.float.space_padding_medium"));
     }
   }
 

@@ -1,6 +1,16 @@
 import { BaseNetWorkViewModel, BaseNetWorkUiState } from "base";
-import { CartRepository, GoodsRepository, OrderCacheStoreRepository, PageRepository } from "data";
-import { Cart, CartGoodsSpec, GoodsDetail, GoodsIdRequest, GoodsSpec, NetworkResponse, SelectedGoods } from "model";
+import { CartRepository, FootprintRepository, GoodsRepository, OrderCacheStoreRepository, PageRepository } from "data";
+import {
+  Cart,
+  CartGoodsSpec,
+  Footprint,
+  Goods,
+  GoodsDetail,
+  GoodsIdRequest,
+  GoodsSpec,
+  NetworkResponse,
+  SelectedGoods
+} from "model";
 import { getRouteParams, GoodsIdParam, OrderNavigator } from "navigation";
 import { GoodsRoutes } from "navigation/src/main/ets/goods/GoodsRoutes";
 import { RequestHelper } from "result";
@@ -50,6 +60,10 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    */
   private readonly goodsRepository: GoodsRepository = new GoodsRepository();
   /**
+   * 足迹仓库
+   */
+  private readonly footprintRepository: FootprintRepository = new FootprintRepository();
+  /**
    * 订单缓存本地存储仓库
    */
   private readonly orderCacheStoreRepository: OrderCacheStoreRepository = new OrderCacheStoreRepository();
@@ -68,6 +82,16 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    */
   protected requestRepository(): Promise<NetworkResponse<GoodsDetail>> {
     return this.pageRepository.getGoodsDetail(this.goodsId);
+  }
+
+  /**
+   * 请求成功回调
+   * @param {GoodsDetail} data - 商品详情数据
+   * @returns {void} 无返回值
+   */
+  protected onRequestSuccess(data: GoodsDetail): void {
+    super.onRequestSuccess(data);
+    this.addToFootprint(data.goodsInfo);
   }
 
   /**
@@ -227,5 +251,25 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    */
   dismissSpecModal(): void {
     this.showSpecSelectModal = false;
+  }
+
+  /**
+   * 添加商品到足迹
+   * @param {Goods} goods - 商品信息
+   * @returns {void} 无返回值
+   */
+  private addToFootprint(goods: Goods): void {
+    if (!goods.id) {
+      return;
+    }
+    const footprint = new Footprint();
+    footprint.goodsId = goods.id;
+    footprint.goodsName = goods.title;
+    footprint.goodsSubTitle = goods.subTitle;
+    footprint.goodsMainPic = goods.mainPic;
+    footprint.goodsPrice = goods.price;
+    footprint.goodsSold = goods.sold;
+    footprint.viewTime = Date.now();
+    this.footprintRepository.addFootprint(footprint);
   }
 }

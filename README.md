@@ -94,38 +94,38 @@ HarmonyOS 开发感兴趣，无论是学习还是共同创造，都欢迎加入�
 - **主模块 (main)**
     - 首页 (home) `待完善`
     - 分类 (category) `待完善`
-    - 购物车 (cart) `待开发`
-    - 我的 (me) `待开发`
+    - 购物车 (cart) `待完善`
+    - 我的 (me) `待完善`
 
 
 - **认证模块 (auth)**
-    - 登录主页 (login) `待开发`
-    - 账号密码登录 (account-login) `待开发`
-    - 注册页面 (register) `待开发`
-    - 找回密码 (reset-password) `待开发`
-    - 短信登录 (sms-login) `待开发`
+    - 登录主页 (login) `待完善`
+    - 账号密码登录 (account-login) `已完成`
+    - 注册页面 (register) `仅页面`
+    - 找回密码 (reset-password) `仅页面`
+    - 短信登录 (sms-login) `仅页面`
 
 
 - **用户体系模块 (user)**
-    - 个人中心 (profile) `待开发`
-    - 收货地址列表 (address-list) `待开发`
-    - 收货地址详情 (address-detail) `待开发`
-    - 用户足迹 (footprint) `待开发`
+    - 个人中心 (profile) `仅页面`
+    - 收货地址列表 (address-list) `已完成`
+    - 收货地址详情 (address-detail) `已完成`
+    - 用户足迹 (footprint) `已完成`
 
 
 - **订单模块 (order)**
-    - 订单列表 (list) `待开发`
-    - 确认订单 (confirm) `待开发`
-    - 订单详情 (detail) `待开发`
-    - 订单支付 (pay) `待开发`
-    - 退款申请 (refund) `待开发`
-    - 订单评价 (comment) `待开发`
-    - 订单物流 (logistics) `待开发`
+    - 订单列表 (list) `待完善`
+    - 确认订单 (confirm) `待完善`
+    - 订单详情 (detail) `待完善`
+    - 订单支付 (pay) `已完成`
+    - 退款申请 (refund) `已完成`
+    - 订单评价 (comment) `待完善`
+    - 订单物流 (logistics) `已完成`
 
 
 - **商品模块 (goods)**
     - 商品搜索 (search) `待开发`
-    - 商品详情 (detail) `待开发`
+    - 商品详情 (detail) `待完善`
     - 商品评价 (comment) `待开发`
     - 商品分类页面 (category) `待开发`
 

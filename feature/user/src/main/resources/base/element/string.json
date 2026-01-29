@@ -207,6 +207,14 @@
     {
       "name": "avatar_label",
       "value": "用户头像"
+    },
+    {
+      "name": "clear_footprint_title",
+      "value": "清空足迹"
+    },
+    {
+      "name": "clear_footprint_message",
+      "value": "确认清空全部足迹吗？"
     }
   ]
 }

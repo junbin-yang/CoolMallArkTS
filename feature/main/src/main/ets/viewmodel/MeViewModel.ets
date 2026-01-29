@@ -1,5 +1,5 @@
 import { BaseViewModel } from "base";
-import { OrderRepository } from "data";
+import { FootprintRepository, OrderRepository } from "data";
 import { Footprint, OrderCount } from "model";
 import { RequestHelper } from "result";
 import { getUserState, UserState } from "state";
@@ -26,6 +26,10 @@ export default class MeViewModel extends BaseViewModel {
    * 订单仓库
    */
   private readonly orderRepository: OrderRepository = new OrderRepository();
+  /**
+   * 足迹仓库
+   */
+  private readonly footprintRepository: FootprintRepository = new FootprintRepository();
   /**
    * 订单统计
    */
@@ -97,6 +101,19 @@ export default class MeViewModel extends BaseViewModel {
    */
   aboutToAppear(): void {
     this.userState.refreshUserInfo();
+    this.loadRecentFootprints();
+  }
+
+  /**
+   * Tab 选中回调
+   * @param {number} index - 当前 Tab 索引
+   * @returns {void} 无返回值
+   */
+  onMainTabSelected(index: number): void {
+    if (index === 3) {
+      this.getUserOrderStatistics();
+      this.loadRecentFootprints();
+    }
   }
 
   /**
@@ -113,6 +130,28 @@ export default class MeViewModel extends BaseViewModel {
       .then((data: OrderCount): void => {
         this.orderCount = OrderCount.fromResponse(data);
       });
+  }
+
+  /**
+   * 加载最近足迹
+   * @returns {void} 无返回值
+   */
+  private loadRecentFootprints(): void {
+    this.footprintRepository.getRecentFootprints(8)
+      .then((data: Footprint[]): void => {
+        this.recentFootprints = data;
+      })
+      .catch((): void => {
+        this.recentFootprints = [];
+      });
+  }
+
+  /**
+   * 是否显示足迹区域
+   * @returns {boolean} 是否显示
+   */
+  isFootprintSectionVisible(): boolean {
+    return this.recentFootprints.length > 0;
   }
 
 }

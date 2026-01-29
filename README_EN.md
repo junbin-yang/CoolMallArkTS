@@ -104,38 +104,38 @@ to join.
 - **Main Module (main)**
     - Home (home) `To be improved`
     - Category (category) `To be improved`
-    - Shopping Cart (cart) `To be developed`
-    - Profile (me) `To be developed`
+    - Shopping Cart (cart) `To be improved`
+    - Profile (me) `To be improved`
 
 
 - **Authentication Module (auth)**
-    - Login Home (login) `To be developed`
-    - Account Password Login (account-login) `To be developed`
-    - Registration Page (register) `To be developed`
-    - Password Recovery (reset-password) `To be developed`
-    - SMS Login (sms-login) `To be developed`
+    - Login Home (login) `To be improved`
+    - Account Password Login (account-login) `Completed`
+    - Registration Page (register) `UI only`
+    - Password Recovery (reset-password) `UI only`
+    - SMS Login (sms-login) `UI only`
 
 
 - **User System Module (user)**
-    - Personal Center (profile) `To be developed`
-    - Address List (address-list) `To be developed`
-    - Address Details (address-detail) `To be developed`
-    - User Footprint (footprint) `To be developed`
+    - Personal Center (profile) `UI only`
+    - Address List (address-list) `Completed`
+    - Address Details (address-detail) `Completed`
+    - User Footprint (footprint) `Completed`
 
 
 - **Order Module (order)**
-    - Order List (list) `To be developed`
-    - Confirm Order (confirm) `To be developed`
-    - Order Details (detail) `To be developed`
-    - Order Payment (pay) `To be developed`
-    - Refund Application (refund) `To be developed`
-    - Order Review (comment) `To be developed`
-    - Order Logistics (logistics) `To be developed`
+    - Order List (list) `To be improved`
+    - Confirm Order (confirm) `To be improved`
+    - Order Details (detail) `To be improved`
+    - Order Payment (pay) `Completed`
+    - Refund Application (refund) `Completed`
+    - Order Review (comment) `To be improved`
+    - Order Logistics (logistics) `Completed`
 
 
 - **Product Module (goods)**
     - Product Search (search) `To be developed`
-    - Product Details (detail) `To be developed`
+    - Product Details (detail) `To be improved`
     - Product Reviews (comment) `To be developed`
     - Product Category Page (category) `To be developed`
 

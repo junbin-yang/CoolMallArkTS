@@ -207,6 +207,14 @@
     {
       "name": "avatar_label",
       "value": "User avatar"
+    },
+    {
+      "name": "clear_footprint_title",
+      "value": "Clear Footprints"
+    },
+    {
+      "name": "clear_footprint_message",
+      "value": "Clear all footprints?"
     }
   ]
 }

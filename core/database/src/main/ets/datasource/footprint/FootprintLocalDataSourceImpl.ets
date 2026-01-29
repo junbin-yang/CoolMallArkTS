@@ -42,7 +42,8 @@ export class FootprintLocalDataSourceImpl implements FootprintLocalDataSource {
    * @returns {Promise<void>} Promise<void>
    */
   async addFootprint(footprint: Footprint): Promise<void> {
-    this.orm.save(this.toEntity(footprint));
+    this.orm.deleteById(FootprintEntity, footprint.goodsId);
+    this.orm.insert(this.toEntity(footprint));
   }
 
   /**
