@@ -29,6 +29,16 @@ HarmonyOS 开发感兴趣，无论是学习还是共同创造，都欢迎加入�
 
 > 如果项目对您有帮助，请给个 Star 支持 ⭐ 这对我来说很重要，能给我带来长期更新维护的动力！
 
+## 📱 项目预览
+
+> 💡 **说明**：由于功能模块较多，截图不下，这里仅展示部分界面。
+
+<img src="docs/images/preview/Mobile 1.png" alt="青商城移动端预览1"/>
+<img src="docs/images/preview/Mobile 2.png" alt="青商城移动端预览2"/>
+<img src="docs/images/preview/Tablet 1.png" alt="青商城平板端预览1"/>
+<img src="docs/images/preview/Tablet 2.png" alt="青商城平板端预览2"/>
+<img src="docs/images/preview/Foldable 1.png" alt="青商城折叠屏预览"/>
+
 ## 📍 项目地址
 
 - **GitHub 地址**：[https://github.com/Joker-x-dev/CoolMallArkTS](https://github.com/Joker-x-dev/CoolMallArkTS)
@@ -190,19 +200,39 @@ feature/                # 功能模块
 
 ## 🚀 开发计划
 
-这是一个由个人持续投入的学习型项目，当前优先完善鸿蒙端基础能力与核心流程，逐步拓展功能模块并提升稳定性与体验。
+这是一个纯粹由个人热情驱动的开源项目。作为一名全职开发者，我只能在工作之余的时间来维护它，每一行代码都凝聚着我下班后和周末的心血。尽管时间有限，我仍然希望通过这个项目创建一个完整的电商学习案例，它更适合作为学习参考而非商业应用，因为某些方面还未达到商业级水准。我的目标是为其他开发者提供一个学习现代
+HarmonyOS 开发技术的实践平台。
+
+由于时间和精力的限制，项目的更新节奏可能不会很快，但我会坚持长期投入，一步一步地完善每个功能模块。如果你有兴趣参与贡献，无论是代码、设计还是文档方面，都将非常欢迎！
+
+### 🌟 鸿蒙版本（当前）
+
+- **技术栈**：ArkTS + ArkUI + MVVM
+- **架构特点**：模块化设计 + 原子化服务
+
+### 📱 Android 版本（维护中）
+
+- **技术栈**：Kotlin + Jetpack Compose + MVVM
+- **架构特点**：模块化设计 + Clean Architecture
+- **项目地址**：
+    - **GitHub**：[https://github.com/Joker-x-dev/CoolMallKotlin](https://github.com/Joker-x-dev/CoolMallKotlin)
+    - **Gitee**：[https://gitee.com/Joker-x-dev/CoolMallKotlin](https://gitee.com/Joker-x-dev/CoolMallKotlin)
+
+### 🍎 iOS 版本（计划中）
+
+- **技术栈**：Swift + SwiftUI + MVVM
+- **架构特点**：模块化设计 + 组件化开发
 
 ### 🔧 近期重点
 
-1. **主流程完善**：完善首页与分类页面的核心交互与数据链路
-2. **基础能力建设**：统一网络层、数据层、状态管理与公共组件
-3. **体验优化**：完善空态、加载、错误处理等基础体验
+1. **核心交易完善**：完善下单、支付、订单列表/详情等核心流程的细节
+2. **首页与分类完善**：优化首页、分类、购物车的核心交互与数据链路
 
 ### 🚀 中长期规划
 
-4. **业务模块扩展**：逐步补齐认证、商品、订单、用户等业务模块
-5. **质量提升**：补充测试与性能优化，提升可维护性
-6. **文档完善**：持续更新开发文档与使用说明
+3. **业务模块扩展**：逐步补齐客服、反馈、商品、订单、营销等业务模块
+4. **质量提升**：补充测试与性能优化，提升可维护性
+5. **文档完善**：持续更新开发文档与使用说明
 
 ## 👥 加入群聊
 

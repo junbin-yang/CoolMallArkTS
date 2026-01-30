@@ -36,6 +36,17 @@ to join.
 > If this project helps you, please give it a Star ⭐ This is very important to me and gives me the
 > motivation for long-term updates and maintenance!
 
+## 📱 Project Preview
+
+> 💡 **Note**: Due to the large number of functional modules, screenshots cannot cover all features.
+> Here we only show some interfaces.
+
+<img src="docs/images/preview/Mobile 1.png" alt="CoolMall Mobile Preview 1"/>
+<img src="docs/images/preview/Mobile 2.png" alt="CoolMall Mobile Preview 2"/>
+<img src="docs/images/preview/Tablet 1.png" alt="CoolMall Tablet Preview 1"/>
+<img src="docs/images/preview/Tablet 2.png" alt="CoolMall Tablet Preview 2"/>
+<img src="docs/images/preview/Foldable 1.png" alt="CoolMall Foldable Preview"/>
+
 ## 📍 Project Links
 
 - **GitHub Repository**: [https://github.com/Joker-x-dev/CoolMallArkTS](https://github.com/Joker-x-dev/CoolMallArkTS)
@@ -200,21 +211,45 @@ feature/                # Feature modules
 
 ## 🚀 Development Plan
 
-This is a learning project maintained with long-term personal effort. The current priority is to
-solidify HarmonyOS foundations and complete core workflows, then expand modules and improve
-stability and experience over time.
+This is an open-source project driven purely by personal passion. As a full-time developer, I can
+only maintain it in my spare time, and every line of code embodies the effort I put in after work
+and on weekends. Despite limited time, I still hope to build a complete e-commerce learning
+example with this project. It is more suitable as a learning reference than a commercial product,
+as some aspects have not yet reached commercial-grade standards. My goal is to provide other
+developers with a hands-on platform for learning modern HarmonyOS development.
+
+Due to time and energy constraints, the update pace may not be fast, but I will continue to invest
+long-term and gradually improve each functional module. If you are interested in contributing,
+whether in code, design, or documentation, you are very welcome!
+
+### 🌟 HarmonyOS Version (Current)
+
+- **Tech Stack**: ArkTS + ArkUI + MVVM
+- **Architecture**: Modular design + atomic services
+
+### 📱 Android Version (Maintenance)
+
+- **Tech Stack**: Kotlin + Jetpack Compose + MVVM
+- **Architecture**: Modular design + Clean Architecture
+- **Project Links**:
+    - **GitHub**: [https://github.com/Joker-x-dev/CoolMallKotlin](https://github.com/Joker-x-dev/CoolMallKotlin)
+    - **Gitee**: [https://gitee.com/Joker-x-dev/CoolMallKotlin](https://gitee.com/Joker-x-dev/CoolMallKotlin)
+
+### 🍎 iOS Version (Planned)
+
+- **Tech Stack**: Swift + SwiftUI + MVVM
+- **Architecture**: Modular design + component-based development
 
 ### 🔧 Near-term Focus
 
-1. **Core Flow Completion**: Improve Home and Category pages with stable data flows
-2. **Foundation Setup**: Standardize network/data layers, state management, and common components
-3. **Experience Polish**: Add empty/loading/error states for a smoother UX
+1. **Core Transaction Completion**: Improve the details of ordering, payment, and order list/detail flows
+2. **Home & Category Completion**: Optimize core interactions and data flows for Home, Category, and Cart
 
 ### 🚀 Medium to Long-term Planning
 
-4. **Module Expansion**: Implement auth, goods, order, and user modules gradually
-5. **Quality Improvement**: Add tests and performance optimizations
-6. **Documentation**: Keep docs and guides updated
+3. **Module Expansion**: Gradually complete customer service, feedback, goods, order, and marketing modules
+4. **Quality Improvement**: Add tests and performance optimizations to improve maintainability
+5. **Documentation**: Keep docs and guides updated
 
 ## 👥 Join the Community
 
