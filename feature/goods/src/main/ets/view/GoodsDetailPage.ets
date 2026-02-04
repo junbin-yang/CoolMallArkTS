@@ -1,6 +1,6 @@
 import { ColumnStart, P100, P50, RowStartTop, SpaceVerticalMedium } from "designsystem";
 import { Goods } from "model";
-import { navigateBack } from "navigation";
+import { GoodsNavigator, navigateBack } from "navigation";
 import { BreakpointState, getBreakpointState, getWindowSafeAreaState, WindowSafeAreaState } from "state";
 import { AppNavDestination, BaseNetWorkView } from "ui";
 import { SpecSelectModal } from "ui/src/main/ets/component/modal/SpecSelectModal";
@@ -194,7 +194,11 @@ export struct GoodsDetailPage {
 
       if (this.vm.data?.comment && this.vm.data.comment.length > 0) {
         ListItem() {
-          GoodsCommentsCard({ comments: this.vm.data?.comment ?? [] });
+          GoodsCommentsCard({
+            comments: this.vm.data?.comment ?? [],
+            onTap: (): void => this.toGoodsCommentList(),
+            onItemTap: (): void => this.toGoodsCommentList()
+          });
         }
 
         ListItem() {
@@ -243,5 +247,17 @@ export struct GoodsDetailPage {
     } else {
       this.vm.updateTopBarAlpha(scrollOffset);
     }
+  }
+
+  /**
+   * 跳转商品评论列表
+   * @returns {void} 无返回值
+   */
+  private toGoodsCommentList(): void {
+    const goodsId: number = this.vm.data?.goodsInfo?.id ?? 0;
+    if (!goodsId) {
+      return;
+    }
+    GoodsNavigator.toComment(goodsId);
   }
 }

@@ -1,4 +1,7 @@
-import { AppNavDestination } from "ui";
+import { P100 } from "designsystem";
+import { Comment } from "model";
+import { AppNavDestination, BaseNetWorkListView, RefreshLayout } from "ui";
+import { CommentCard } from "../component/CommentCard";
 import GoodsCommentViewModel from "../viewmodel/GoodsCommentViewModel";
 
 /**
@@ -14,15 +17,24 @@ export struct GoodsCommentPage {
   private vm: GoodsCommentViewModel = new GoodsCommentViewModel();
 
   /**
+   * 列表滚动控制器
+   */
+  private listScroller: Scroller = new Scroller();
+
+  /**
    * 构建商品评论页面
    * @returns {void} 无返回值
    */
-  build() {
+  build(): void {
     AppNavDestination({
-      title: "商品评论",
+      title: $r("app.string.goods_comment_title"),
       viewModel: this.vm
     }) {
-      this.GoodsCommentContent();
+      BaseNetWorkListView({
+        uiState: this.vm.uiState,
+        onRetry: (): void => this.vm.retryRequest(),
+        content: (): void => this.GoodsCommentContent()
+      });
     }
   }
 
@@ -31,7 +43,32 @@ export struct GoodsCommentPage {
    * @returns {void} 无返回值
    */
   @Builder
-  private GoodsCommentContent() {
-    Text("商品评论页面内容视图")
+  private GoodsCommentContent(): void {
+    RefreshLayout({
+      loading: this.vm.isLoading,
+      isEnableSlideUp: this.vm.isEnableSlideUp,
+      scroller: this.listScroller,
+      onRefresh: (direction: "pull" | "slideUp"): void => this.vm.onRefreshDirection(direction)
+    }) {
+      List({ space: 12, scroller: this.listScroller }) {
+        ForEach(this.vm.listData, (item: Comment): void => {
+          ListItem() {
+            CommentCard({
+              comment: item,
+              onImageTap: (images: string[], index: number): void => {
+                this.vm.openImagePreview(images, index);
+              }
+            });
+          }
+        }, (item: Comment, index: number): string => `${item.id}-${index}`);
+      }
+      .width(P100)
+      .height(P100)
+      .padding({
+        left: $r("app.float.space_horizontal_medium"),
+        right: $r("app.float.space_horizontal_medium")
+      })
+      .edgeEffect(EdgeEffect.None);
+    }
   }
 }

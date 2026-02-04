@@ -20,6 +20,11 @@ export struct GoodsCommentsCard {
    */
   @Param
   onTap: (() => void) | undefined = undefined;
+  /**
+   * 点击评论项回调
+   */
+  @Param
+  onItemTap: (() => void) | undefined = undefined;
 
   /**
    * 构建商品评论卡片
@@ -55,7 +60,10 @@ export struct GoodsCommentsCard {
           SpaceVerticalSmall();
 
           ForEach(this.comments, (comment: Comment, index: number): void => {
-            CommentItem({ comment });
+            CommentItem({
+              comment,
+              onTap: this.onItemTap
+            });
             if (index < this.comments.length - 1) {
               IBestDivider()
             }
