@@ -27,6 +27,8 @@ export { OrderRepository } from './src/main/ets/repository/OrderRepository';
 
 export { PageRepository } from './src/main/ets/repository/PageRepository';
 
+export { SearchHistoryRepository } from './src/main/ets/repository/SearchHistoryRepository';
+
 export { AccountStoreRepository } from './src/main/ets/repository/AccountStoreRepository';
 
 export { UserInfoRepository } from './src/main/ets/repository/UserInfoRepository';

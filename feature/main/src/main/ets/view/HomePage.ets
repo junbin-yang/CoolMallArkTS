@@ -35,7 +35,9 @@ export struct HomePage {
       viewModel: this.vm,
       hideTitleBar: true,
     }) {
-      HomeTopBar();
+      HomeTopBar({
+        onSearchTap: (): void => GoodsNavigator.toSearch()
+      });
       BaseNetWorkListView({
         uiState: this.vm.uiState,
         onRetry: (): void => this.vm.retryRequest(),

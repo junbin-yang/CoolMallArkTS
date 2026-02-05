@@ -5,6 +5,8 @@
 
 export { AppNavDestination } from "./src/main/ets/component/navdestination/AppNavDestination";
 
+export { SearchTopAppBar } from "./src/main/ets/component/appbar/SearchTopAppBar";
+
 export { BaseNetWorkView } from "./src/main/ets/component/network/BaseNetWorkView";
 
 export { BaseNetWorkListView } from "./src/main/ets/component/network/BaseNetWorkListView";
