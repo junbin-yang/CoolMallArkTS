@@ -6,7 +6,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ibestservices/ibest-ui-v2": "1.1.1",
+    "@ibestservices/ibest-ui-v2": "1.1.2",
     "designsystem": "file:../designsystem"
   }
 }

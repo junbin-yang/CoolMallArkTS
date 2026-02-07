@@ -145,10 +145,10 @@ to join.
 
 
 - **Product Module (goods)**
-    - Product Search (search) `To be developed`
+    - Product Search (search) `Completed`
     - Product Details (detail) `To be improved`
-    - Product Reviews (comment) `To be developed`
-    - Product Category Page (category) `To be developed`
+    - Product Reviews (comment) `Completed`
+    - Product Category Page (category) `Completed`
 
 
 - **Marketing Module (market)**

@@ -134,10 +134,10 @@ HarmonyOS 开发感兴趣，无论是学习还是共同创造，都欢迎加入�
 
 
 - **商品模块 (goods)**
-    - 商品搜索 (search) `待开发`
+    - 商品搜索 (search) `已完成`
     - 商品详情 (detail) `待完善`
-    - 商品评价 (comment) `待开发`
-    - 商品分类页面 (category) `待开发`
+    - 商品评价 (comment) `已完成`
+    - 商品分类页面 (category) `已完成`
 
 
 - **营销模块 (market)**
