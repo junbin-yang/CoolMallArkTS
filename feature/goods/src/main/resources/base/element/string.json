@@ -147,6 +147,38 @@
     {
       "name": "cancel",
       "value": "取消"
+    },
+    {
+      "name": "goods_sort_comprehensive",
+      "value": "综合排序"
+    },
+    {
+      "name": "goods_sort_price_asc",
+      "value": "价格升序"
+    },
+    {
+      "name": "goods_sort_price_desc",
+      "value": "价格降序"
+    },
+    {
+      "name": "goods_sort_sales_asc",
+      "value": "销量升序"
+    },
+    {
+      "name": "goods_sort_sales_desc",
+      "value": "销量降序"
+    },
+    {
+      "name": "goods_filter_loading",
+      "value": "分类加载中..."
+    },
+    {
+      "name": "goods_filter_category_empty",
+      "value": "暂无可选分类"
+    },
+    {
+      "name": "goods_category_list_pending",
+      "value": "商品列表布局待实现"
     }
   ]
 }

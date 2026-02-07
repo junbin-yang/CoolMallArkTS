@@ -1,6 +1,8 @@
 import { BaseNetWorkViewModel } from "base";
 import { GoodsRepository } from "data";
 import { Category, CategoryTree, NetworkResponse } from "model";
+import { GoodsNavigator } from "navigation";
+import { GoodsCategoryParam } from "navigation/src/main/ets/goods/GoodsParam";
 
 /**
  * @file 分类页面 ViewModel
@@ -149,6 +151,21 @@ export default class CategoryViewModel extends BaseNetWorkViewModel<Category[]> 
   }
 
   /**
+   * 跳转到商品分类页面
+   * @param {number} categoryId - 分类 ID
+   * @returns {void} 无返回值
+   */
+  toGoodsCategoryPage(categoryId: number): void {
+    const params: GoodsCategoryParam = {
+      typeId: `${categoryId}`,
+      featured: false,
+      recommend: false,
+      keyword: undefined
+    };
+    GoodsNavigator.toCategory(params);
+  }
+
+  /**
    * 启动侧边栏联动解锁计时器
    * @param {number} targetIndex - 目标索引
    * @returns {void} 无返回值
@@ -197,78 +214,6 @@ export default class CategoryViewModel extends BaseNetWorkViewModel<Category[]> 
   * const tree = this.convertToTree(list);
    */
   private convertToTree(categories: Category[]): CategoryTree[] {
-    if (!categories || categories.length === 0) {
-      return [];
-    }
-
-    const nestedTrees: CategoryTree[] = this.tryBuildTreeFromNested(categories);
-    if (nestedTrees.length > 0) {
-      return nestedTrees;
-    }
-
-    const sortedList: Category[] = [...categories].sort((a: Category, b: Category): number => a.sortNum - b.sortNum);
-    const categoryTrees: CategoryTree[] =
-      sortedList.map((item: Category): CategoryTree => CategoryTree.fromCategory(item));
-    const rootCategories: CategoryTree[] = [];
-    const childrenMap: Map<number, CategoryTree[]> = new Map<number, CategoryTree[]>();
-
-    categoryTrees.forEach((categoryTree: CategoryTree): void => {
-      const parentId: number | null | undefined = categoryTree.parentId;
-      if (parentId === null || parentId === undefined || parentId === 0) {
-        rootCategories.push(categoryTree);
-        return;
-      }
-      const children: CategoryTree[] = childrenMap.get(parentId) ?? [];
-      children.push(categoryTree);
-      childrenMap.set(parentId, children);
-    });
-
-    return rootCategories.map((rootCategory: CategoryTree): CategoryTree => this.buildCategoryTree(rootCategory,
-      childrenMap));
-  }
-
-  /**
-   * 递归构建分类树
-   * @param {CategoryTree} categoryTree - 当前分类节点
-   * @param {Map<number, CategoryTree[]>} childrenMap - 子分类映射
-   * @returns {CategoryTree} 构建完成的分类节点
-   */
-  private buildCategoryTree(categoryTree: CategoryTree, childrenMap: Map<number, CategoryTree[]>): CategoryTree {
-    const children: CategoryTree[] = childrenMap.get(categoryTree.id) ?? [];
-    if (children.length === 0) {
-      return categoryTree;
-    }
-    categoryTree.children =
-      children.map((child: CategoryTree): CategoryTree => this.buildCategoryTree(child, childrenMap));
-    return categoryTree;
-  }
-
-  /**
-   * 尝试从已包含 children 的数据中构建树
-   * @param {Category[]} categories - 原始分类列表
-   * @returns {CategoryTree[]} 构建后的树结构
-   */
-  private tryBuildTreeFromNested(categories: Category[]): CategoryTree[] {
-    const hasChildren: boolean = categories.some((item: Category): boolean => {
-      return (item.children ?? []).length > 0;
-    });
-    if (!hasChildren) {
-      return [];
-    }
-    return categories.map((item: Category): CategoryTree => this.convertNestedNode(item));
-  }
-
-  /**
-   * 递归转换带 children 的节点
-   * @param {Category} category - 原始分类节点
-   * @returns {CategoryTree} 转换后的分类树节点
-   */
-  private convertNestedNode(category: Category): CategoryTree {
-    const node: CategoryTree = CategoryTree.fromCategory(category);
-    const children: Category[] = category.children ?? [];
-    if (children.length > 0) {
-      node.children = children.map((child: Category): CategoryTree => this.convertNestedNode(child));
-    }
-    return node;
+    return CategoryTree.buildTree(categories);
   }
 }

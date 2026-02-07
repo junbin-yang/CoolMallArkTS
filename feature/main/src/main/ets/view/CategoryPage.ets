@@ -189,7 +189,8 @@ export struct CategoryPage {
       top: $r("app.float.space_vertical_small_x"),
       bottom: $r("app.float.space_vertical_small_x")
     })
-    .alignItems(HorizontalAlign.Center);
+    .alignItems(HorizontalAlign.Center)
+    .onClick((): void => this.vm.toGoodsCategoryPage(category.id));
   }
 
   /**

@@ -1,6 +1,8 @@
 import { BaseNetWorkListUiState, BaseNetWorkListViewModel } from "base";
 import { GoodsRepository, PageRepository } from "data";
-import { Goods, GoodsSearchRequest, Home, NetworkPageData, NetworkResponse } from "model";
+import { Category, Goods, GoodsSearchRequest, Home, NetworkPageData, NetworkResponse } from "model";
+import { GoodsNavigator } from "navigation";
+import { GoodsCategoryParam } from "navigation/src/main/ets/goods/GoodsParam";
 import { RequestHelper } from "result";
 
 /**
@@ -86,5 +88,63 @@ export default class HomeViewModel extends BaseNetWorkListViewModel<Goods> {
     this.uiState = BaseNetWorkListUiState.LOADING;
     this.currentPage = 1;
     this.loadHomeData();
+  }
+
+  /**
+   * 跳转到商品分类页面
+   * @param {number} categoryId - 分类 ID
+   * @returns {void} 无返回值
+   */
+  toGoodsCategoryPage(categoryId: number): void {
+    const allCategories: Category[] = this.pageData.categoryAll ?? [];
+    const childCategoryIds: number[] = this.findChildCategoryIds(categoryId, allCategories);
+    const typeIdParam: string = childCategoryIds.join(",");
+    const params: GoodsCategoryParam = {
+      typeId: typeIdParam,
+      featured: false,
+      recommend: false,
+      keyword: undefined
+    };
+    GoodsNavigator.toCategory(params);
+  }
+
+  /**
+   * 跳转到限时精选页面
+   * @returns {void} 无返回值
+   */
+  toFlashSalePage(): void {
+    const params: GoodsCategoryParam = {
+      typeId: undefined,
+      featured: true,
+      recommend: false,
+      keyword: undefined
+    };
+    GoodsNavigator.toCategory(params);
+  }
+
+  /**
+   * 跳转到推荐商品页面
+   * @returns {void} 无返回值
+   */
+  toRecommendPage(): void {
+    const params: GoodsCategoryParam = {
+      typeId: undefined,
+      featured: false,
+      recommend: true,
+      keyword: undefined
+    };
+    GoodsNavigator.toCategory(params);
+  }
+
+  /**
+   * 查找指定分类的子分类 ID
+   * @param {number} parentId - 父分类 ID
+   * @param {Category[]} allCategories - 全部分类列表
+   * @returns {number[]} 子分类 ID 列表
+   */
+  private findChildCategoryIds(parentId: number, allCategories: Category[]): number[] {
+    return allCategories
+      .filter((item: Category): boolean => item.parentId === parentId)
+      .map((item: Category): number => item.id);
   }
 }

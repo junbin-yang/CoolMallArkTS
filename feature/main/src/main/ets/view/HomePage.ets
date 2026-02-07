@@ -1,14 +1,14 @@
-import { AppNavDestination, BaseNetWorkListView, GoodsGridItem, GoodsListItem, RefreshLayout, TitleWithLine } from "ui";
-import { Goods } from "model";
 import { HomeBanner } from "../component/HomeBanner";
 import { HomeCategorySection } from "../component/HomeCategorySection";
 import { HomeCouponSection } from "../component/HomeCouponSection";
 import { HomeFlashSaleSection } from "../component/HomeFlashSaleSection";
 import { HomeTopBar } from "../component/HomeTopBar";
 import HomeViewModel from "../viewmodel/HomeViewModel";
-import { P100, SpaceVerticalSmall } from "designsystem";
-import { bp } from "state";
+import { Goods } from "model";
 import { GoodsNavigator } from "navigation";
+import { P100, SpaceVerticalSmall } from "designsystem";
+import { AppNavDestination, BaseNetWorkListView, GoodsGridItem, GoodsListItem, RefreshLayout, TitleWithLine } from "ui";
+import { bp } from "state";
 
 /**
  * @file 首页视图
@@ -68,15 +68,17 @@ export struct HomePage {
         }
 
         ListItem() {
-          HomeCategorySection({ categories: this.vm.pageData.category ?? [] });
+          HomeCategorySection({
+            categories: this.vm.pageData.category ?? [],
+            onCategoryClick: (id: number): void => this.vm.toGoodsCategoryPage(id)
+          });
         }
 
         ListItem() {
           HomeFlashSaleSection({
             goodsList: this.vm.pageData.flashSale ?? [],
-            onGoodsClick: (id: number): void => {
-              GoodsNavigator.toDetail(id);
-            }
+            onGoodsClick: (id: number): void => GoodsNavigator.toDetail(id),
+            onMoreClick: (): void => this.vm.toFlashSalePage()
           });
         }
 
@@ -90,9 +92,7 @@ export struct HomePage {
               GridItem() {
                 GoodsListItem({
                   goods: item,
-                  onItemClick: (id: number): void => {
-                    GoodsNavigator.toDetail(id);
-                  }
+                  onItemClick: (id: number): void => GoodsNavigator.toDetail(id)
                 });
               }
             }, (item: Goods): string => `${item.id}`);
@@ -113,9 +113,7 @@ export struct HomePage {
               GridItem() {
                 GoodsGridItem({
                   goods: item,
-                  onItemClick: (id: number): void => {
-                    GoodsNavigator.toDetail(id);
-                  }
+                  onItemClick: (id: number): void => GoodsNavigator.toDetail(id)
                 });
               }
             }, (item: Goods): string => `${item.id}`);

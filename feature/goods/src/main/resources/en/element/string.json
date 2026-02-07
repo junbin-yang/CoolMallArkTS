@@ -147,6 +147,38 @@
     {
       "name": "cancel",
       "value": "Cancel"
+    },
+    {
+      "name": "goods_sort_comprehensive",
+      "value": "Comprehensive"
+    },
+    {
+      "name": "goods_sort_price_asc",
+      "value": "Price: Low to High"
+    },
+    {
+      "name": "goods_sort_price_desc",
+      "value": "Price: High to Low"
+    },
+    {
+      "name": "goods_sort_sales_asc",
+      "value": "Sales: Low to High"
+    },
+    {
+      "name": "goods_sort_sales_desc",
+      "value": "Sales: High to Low"
+    },
+    {
+      "name": "goods_filter_loading",
+      "value": "Loading categories..."
+    },
+    {
+      "name": "goods_filter_category_empty",
+      "value": "No category options"
+    },
+    {
+      "name": "goods_category_list_pending",
+      "value": "Product list layout pending"
     }
   ]
 }
