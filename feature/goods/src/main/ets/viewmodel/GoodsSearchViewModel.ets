@@ -1,7 +1,7 @@
 import { BaseNetWorkViewModel } from "base";
 import { GoodsRepository, SearchHistoryRepository } from "data";
 import { GoodsSearchKeyword, NetworkResponse, SearchHistory } from "model";
-import { GoodsNavigator, navigateBack } from "navigation";
+import { GoodsNavigator } from "navigation";
 import { GoodsCategoryParam } from "navigation/src/main/ets/goods/GoodsParam";
 
 /**
@@ -28,6 +28,11 @@ export default class GoodsSearchViewModel extends BaseNetWorkViewModel<GoodsSear
    */
   @Trace
   searchHistoryList: SearchHistory[] = [];
+  /**
+   * 是否显示清空搜索历史确认弹窗
+   */
+  @Trace
+  isClearHistoryDialogVisible: boolean = false;
 
   /**
    * 页面出现时加载数据
@@ -104,10 +109,34 @@ export default class GoodsSearchViewModel extends BaseNetWorkViewModel<GoodsSear
   }
 
   /**
-   * 清空搜索历史
+   * 点击清空搜索历史
    * @returns {void} 无返回值
    */
   clearSearchHistory(): void {
+    this.showClearHistoryDialog();
+  }
+
+  /**
+   * 显示清空搜索历史确认弹窗
+   * @returns {void} 无返回值
+   */
+  showClearHistoryDialog(): void {
+    this.isClearHistoryDialogVisible = true;
+  }
+
+  /**
+   * 隐藏清空搜索历史确认弹窗
+   * @returns {void} 无返回值
+   */
+  hideClearHistoryDialog(): void {
+    this.isClearHistoryDialogVisible = false;
+  }
+
+  /**
+   * 确认清空搜索历史
+   * @returns {void} 无返回值
+   */
+  confirmClearSearchHistory(): void {
     this.handleClearHistory();
   }
 
@@ -125,6 +154,7 @@ export default class GoodsSearchViewModel extends BaseNetWorkViewModel<GoodsSear
    */
   private async handleClearHistory(): Promise<void> {
     await this.searchHistoryRepository.clearAllSearchHistory();
+    this.hideClearHistoryDialog();
     await this.loadSearchHistory();
   }
 }

@@ -14,6 +14,6 @@ export class SearchHistoryEntity {
   /**
    * 搜索时间戳
    */
-  @Column({ type: ColumnType.INTEGER })
+  @Column({ name: "search_time", type: ColumnType.INTEGER })
   searchTime?: number;
 }

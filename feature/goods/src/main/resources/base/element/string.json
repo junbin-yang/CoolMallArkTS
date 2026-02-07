@@ -135,6 +135,18 @@
     {
       "name": "view_images",
       "value": "查看图片"
+    },
+    {
+      "name": "clear_search_history_title",
+      "value": "清空搜索历史"
+    },
+    {
+      "name": "clear_search_history_message",
+      "value": "确认清空全部搜索历史吗？"
+    },
+    {
+      "name": "cancel",
+      "value": "取消"
     }
   ]
 }

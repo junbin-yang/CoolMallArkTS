@@ -135,6 +135,18 @@
     {
       "name": "view_images",
       "value": "View Images"
+    },
+    {
+      "name": "clear_search_history_title",
+      "value": "Clear Search History"
+    },
+    {
+      "name": "clear_search_history_message",
+      "value": "Are you sure you want to clear all search history?"
+    },
+    {
+      "name": "cancel",
+      "value": "Cancel"
     }
   ]
 }

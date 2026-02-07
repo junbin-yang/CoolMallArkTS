@@ -1,3 +1,4 @@
+import { IBestDialog } from "ibestui";
 import {
   ColumnStart,
   MediumPaddingVerticalScroll,
@@ -50,6 +51,18 @@ export struct GoodsSearchPage {
         onRetry: (): void => this.vm.retryRequest(),
         content: (): void => this.GoodsSearchContent()
       });
+
+      IBestDialog({
+        visible: this.vm.isClearHistoryDialogVisible,
+        title: $r("app.string.clear_search_history_title"),
+        message: $r("app.string.clear_search_history_message"),
+        showCancelButton: true,
+        confirmButtonText: $r("app.string.confirm"),
+        cancelButtonText: $r("app.string.cancel"),
+        onConfirm: (): void => this.vm.confirmClearSearchHistory(),
+        onCancel: (): void => this.vm.hideClearHistoryDialog(),
+        onClose: (): void => this.vm.hideClearHistoryDialog()
+      });
     }
   }
 
@@ -85,7 +98,7 @@ export struct GoodsSearchPage {
         icon: $r("app.media.ic_delete"),
         iconSize: 18,
         tintColor: $r("app.color.text_subtitle"),
-        onTap: (): void => this.vm.clearSearchHistory()
+        onTap: (): void => this.vm.showClearHistoryDialog()
       });
     }
 
