@@ -66,3 +66,5 @@ export { SpecSelectModal } from "./src/main/ets/component/modal/SpecSelectModal"
 export { DictSelectModal } from "./src/main/ets/component/modal/DictSelectModal";
 
 export { OrderGoodsModal } from "./src/main/ets/component/modal/OrderGoodsModal";
+
+export { CouponCard, CouponCardMode } from "./src/main/ets/component/coupon/CouponCard";
