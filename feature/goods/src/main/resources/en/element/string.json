@@ -179,6 +179,10 @@
     {
       "name": "goods_category_list_pending",
       "value": "Product list layout pending"
+    },
+    {
+      "name": "coupon_receive_success",
+      "value": "Claimed successfully"
     }
   ]
 }

@@ -92,6 +92,16 @@ export default class OrderConfirmViewModel extends BaseNetWorkViewModel<ConfirmO
   }
 
   /**
+   * 请求成功回调
+   * @param {ConfirmOrder} data - 确认订单数据
+   * @returns {void} 无返回值
+   */
+  protected onRequestSuccess(data: ConfirmOrder): void {
+    const normalizedData: ConfirmOrder = new ConfirmOrder(data);
+    super.onRequestSuccess(normalizedData);
+  }
+
+  /**
    * 页面出现时加载数据
    * @returns {void} 无返回值
    */
@@ -232,6 +242,29 @@ export default class OrderConfirmViewModel extends BaseNetWorkViewModel<ConfirmO
     this.hideCouponModal();
     this.calculatePrices();
   }
+  /**
+   * 点击优惠券卡片操作
+   * @param {number} couponId - 优惠券 ID
+   * @returns {void} 无返回值
+   */
+  onCouponAction(couponId: number): void {
+    const coupons: Coupon[] = this.data?.userCoupon ?? [];
+    const currentCouponId: number = this.selectedCoupon?.id ?? 0;
+    if (couponId === currentCouponId) {
+      this.selectCoupon(null);
+      return;
+    }
+    const coupon: Coupon | undefined = coupons.find((item: Coupon): boolean => item.id === couponId);
+    if (!coupon) {
+      return;
+    }
+    const fullAmount: number = coupon.condition?.fullAmount ?? 0;
+    if (fullAmount > 0 && this.originalPrice < fullAmount) {
+      return;
+    }
+    this.selectCoupon(coupon);
+  }
+
 
   /**
    * 计算商品原价

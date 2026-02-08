@@ -1,19 +1,22 @@
 import { BaseNetWorkViewModel, BaseNetWorkUiState } from "base";
-import { CartRepository, FootprintRepository, GoodsRepository, OrderCacheStoreRepository, PageRepository } from "data";
+import { CartRepository, CouponRepository, FootprintRepository, GoodsRepository, OrderCacheStoreRepository, PageRepository } from "data";
 import {
   Cart,
   CartGoodsSpec,
+  Coupon,
   Footprint,
   Goods,
   GoodsDetail,
   GoodsIdRequest,
   GoodsSpec,
   NetworkResponse,
+  ReceiveCouponRequest,
   SelectedGoods
 } from "model";
-import { getRouteParams, GoodsIdParam, OrderNavigator } from "navigation";
+import { AuthNavigator, getRouteParams, GoodsIdParam, OrderNavigator } from "navigation";
 import { GoodsRoutes } from "navigation/src/main/ets/goods/GoodsRoutes";
 import { RequestHelper } from "result";
+import { getUserState, UserState } from "state";
 import { ToastUtils } from "util";
 
 /**
@@ -52,6 +55,11 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
   @Trace
   selectedSpec: GoodsSpec | null = null;
   /**
+   * 优惠券弹窗显示状态
+   */
+  @Trace
+  showCouponModalVisible: boolean = false;
+  /**
    * 页面仓库
    */
   private readonly pageRepository: PageRepository = new PageRepository();
@@ -59,6 +67,14 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    * 商品仓库
    */
   private readonly goodsRepository: GoodsRepository = new GoodsRepository();
+  /**
+   * 优惠券仓库
+   */
+  private readonly couponRepository: CouponRepository = new CouponRepository();
+  /**
+   * 用户状态
+   */
+  private readonly userState: UserState = getUserState();
   /**
    * 足迹仓库
    */
@@ -251,6 +267,57 @@ export default class GoodsDetailViewModel extends BaseNetWorkViewModel<GoodsDeta
    */
   dismissSpecModal(): void {
     this.showSpecSelectModal = false;
+  }
+
+  /**
+   * 显示优惠券弹窗
+   * @returns {void} 无返回值
+   */
+  showCouponModal(): void {
+    this.showCouponModalVisible = true;
+  }
+
+  /**
+   * 隐藏优惠券弹窗
+   * @returns {void} 无返回值
+   */
+  hideCouponModal(): void {
+    this.showCouponModalVisible = false;
+  }
+
+  /**
+   * 处理优惠券领取点击
+   * @param {number} couponId - 优惠券 ID
+   * @returns {void} 无返回值
+   */
+  onCouponReceive(couponId: number): void {
+    const coupons: Coupon[] = this.data?.coupon ?? [];
+    const coupon: Coupon | undefined = coupons.find((item: Coupon): boolean => item.id === couponId);
+    if (!coupon) {
+      return;
+    }
+    this.receiveCoupon(coupon);
+  }
+
+  /**
+   * 领取优惠券
+   * @param {Coupon} coupon - 优惠券
+   * @returns {void} 无返回值
+   */
+  receiveCoupon(coupon: Coupon): void {
+    if (!this.userState.isLoggedIn()) {
+      this.hideCouponModal();
+      AuthNavigator.toLogin();
+      return;
+    }
+
+    const request: ReceiveCouponRequest = new ReceiveCouponRequest();
+    request.couponId = coupon.id;
+    RequestHelper.repository<string>(this.couponRepository.receiveCoupon(request))
+      .execute()
+      .then((): void => {
+        ToastUtils.showSuccess($r("app.string.coupon_receive_success"));
+      });
   }
 
   /**

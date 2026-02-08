@@ -179,6 +179,10 @@
     {
       "name": "goods_category_list_pending",
       "value": "商品列表布局待实现"
+    },
+    {
+      "name": "coupon_receive_success",
+      "value": "领取成功"
     }
   ]
 }

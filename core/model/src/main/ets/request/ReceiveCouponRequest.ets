@@ -6,12 +6,15 @@ export class ReceiveCouponRequest {
   /**
    * 优惠券ID
    */
-  couponId: number;
+  couponId: number = 0;
 
   /**
-   * @param {ReceiveCouponRequest} init - 初始化数据
+   * @param {Partial<ReceiveCouponRequest>} init - 初始化数据
    */
-  constructor(init: ReceiveCouponRequest) {
-    this.couponId = init.couponId;
+  constructor(init?: Partial<ReceiveCouponRequest>) {
+    if (!init) {
+      return;
+    }
+    this.couponId = init.couponId ?? this.couponId;
   }
 }

@@ -13,6 +13,12 @@ export struct HomeCouponSection {
    */
   @Param
   coupons: Coupon[] = [];
+  /**
+   * 点击领取回调
+   */
+  @Param
+  onReceiveClick: () => void = (): void => {
+  };
 
   /**
    * 构建优惠券区域
@@ -42,7 +48,10 @@ export struct HomeCouponSection {
 
         Text($r("app.string.receive"))
           .fontSize($r("app.float.body_medium"))
-          .fontColor($r("app.color.primary"));
+          .fontColor($r("app.color.primary"))
+          .onClick((): void => {
+            this.onReceiveClick();
+          });
       }
     }
   }
@@ -67,10 +76,10 @@ export struct HomeCouponSection {
       SpaceHorizontalSmall();
 
       Text(coupon.title)
-        .fontSize($r("app.float.body_large"))
+        .fontSize($r("app.float.body_medium"))
+        .fontColor($r("app.color.text_primary"))
         .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .layoutWeight(1);
+        .textOverflow({ overflow: TextOverflow.Ellipsis });
     }
   }
 }

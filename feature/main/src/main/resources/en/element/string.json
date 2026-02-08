@@ -179,6 +179,10 @@
     {
       "name": "get_selected_goods_failed",
       "value": "Failed to get selected items"
+    },
+    {
+      "name": "coupon_receive_success",
+      "value": "Claimed successfully"
     }
   ]
 }

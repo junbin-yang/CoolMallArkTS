@@ -158,7 +158,7 @@
     },
     {
       "name": "coupon_receive",
-      "value": "Receive"
+      "value": "Claim"
     },
     {
       "name": "coupon_received",

@@ -62,23 +62,71 @@ export class Coupon {
    */
   useStatus?: number | null = null;
 
-  constructor(init?: Partial<Coupon>) {
+  constructor(init?: Partial<Coupon> | ICouponRaw) {
     if (!init) {
       return;
     }
-    this.id = init.id ?? this.id;
-    this.title = init.title ?? this.title;
-    this.description = init.description ?? this.description;
-    this.type = init.type ?? this.type;
-    this.amount = init.amount ?? this.amount;
-    this.num = init.num ?? this.num;
-    this.receivedNum = init.receivedNum ?? this.receivedNum;
-    this.startTime = init.startTime ?? this.startTime;
-    this.endTime = init.endTime ?? this.endTime;
-    this.status = init.status ?? this.status;
-    this.condition = init.condition ? new Condition(init.condition) : this.condition;
-    this.createTime = init.createTime ?? this.createTime;
-    this.updateTime = init.updateTime ?? this.updateTime;
-    this.useStatus = init.useStatus ?? this.useStatus;
+    const raw: ICouponRaw = init as ICouponRaw;
+    this.id = (init as Partial<Coupon>).id ?? this.id;
+    this.title = (init as Partial<Coupon>).title ?? this.title;
+    this.description = (init as Partial<Coupon>).description ?? this.description;
+    this.type = (init as Partial<Coupon>).type ?? this.type;
+    this.amount = (init as Partial<Coupon>).amount ?? this.amount;
+    this.num = (init as Partial<Coupon>).num ?? this.num;
+    this.receivedNum = (init as Partial<Coupon>).receivedNum ?? this.receivedNum;
+    this.startTime = (init as Partial<Coupon>).startTime ?? this.startTime;
+    this.endTime = (init as Partial<Coupon>).endTime ?? this.endTime;
+    this.status = (init as Partial<Coupon>).status ?? this.status;
+    const fallbackCondition: string | Condition | Object | null | undefined = raw.condition$1;
+    const rawCondition: string | Condition | Object | null | undefined = raw.condition ?? fallbackCondition;
+    this.condition = this.parseCondition(rawCondition);
+    this.createTime = (init as Partial<Coupon>).createTime ?? this.createTime;
+    this.updateTime = (init as Partial<Coupon>).updateTime ?? this.updateTime;
+    this.useStatus = (init as Partial<Coupon>).useStatus ?? this.useStatus;
   }
+
+  /**
+   * 解析优惠券条件字段
+   * @param {string | Condition | Object | null | undefined} rawCondition - 原始条件数据
+   * @returns {Condition | null} 解析后的条件
+   */
+  private parseCondition(rawCondition: string | Condition | Object | null | undefined): Condition | null {
+    if (rawCondition === null || rawCondition === undefined) {
+      return null;
+    }
+    if (rawCondition instanceof Condition) {
+      return rawCondition;
+    }
+    if (typeof rawCondition === "string") {
+      const trimmed: string = rawCondition.trim();
+      if (trimmed.length === 0) {
+        return null;
+      }
+      try {
+        const parsed: Object = JSON.parse(trimmed) as Object;
+        return new Condition(parsed as Condition);
+      } catch (_error) {
+        return null;
+      }
+    }
+    if (rawCondition instanceof Object) {
+      return new Condition(rawCondition as Condition);
+    }
+    return null;
+  }
+}
+
+
+/**
+ * 优惠券原始数据结构
+ */
+interface ICouponRaw {
+  /**
+   * 优惠券条件（接口可能返回字符串）
+   */
+  condition?: string | Condition | Object | null;
+  /**
+   * 条件对象备选字段
+   */
+  "condition$1"?: string | Condition | Object | null;
 }

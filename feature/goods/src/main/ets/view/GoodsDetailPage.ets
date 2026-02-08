@@ -1,8 +1,8 @@
 import { ColumnStart, P100, P50, RowStartTop, SpaceVerticalMedium } from "designsystem";
-import { Goods } from "model";
+import { Coupon, Goods } from "model";
 import { GoodsNavigator, navigateBack } from "navigation";
 import { BreakpointState, getBreakpointState, getWindowSafeAreaState, WindowSafeAreaState } from "state";
-import { AppNavDestination, BaseNetWorkView } from "ui";
+import { AppNavDestination, BaseNetWorkView, CouponReceiveModal } from "ui";
 import { SpecSelectModal } from "ui/src/main/ets/component/modal/SpecSelectModal";
 import { GoodsBanner } from "../component/GoodsBanner";
 import { GoodsDetailBottomBar } from "../component/GoodsDetailBottomBar";
@@ -95,6 +95,13 @@ export struct GoodsDetailPage {
         },
         onRetry: (): void => this.vm.loadGoodsSpecs()
       });
+
+      CouponReceiveModal({
+        visible: this.vm.showCouponModalVisible,
+        coupons: this.vm.data?.coupon ?? [],
+        onDismiss: (): void => this.vm.hideCouponModal(),
+        onCouponAction: (couponId: number): void => this.vm.onCouponReceive(couponId)
+      });
     }
   }
 
@@ -174,9 +181,7 @@ export struct GoodsDetailPage {
           coupons: this.vm.data?.coupon ?? [],
           selectedSpec: this.vm.selectedSpec ?? undefined,
           onSpecClick: (): void => this.vm.showSpecModal(),
-          onCouponClick: (): void => {
-            // TODO: 实现优惠券弹窗功能
-          }
+          onCouponClick: (): void => this.vm.showCouponModal()
         });
       }
 
@@ -248,6 +253,7 @@ export struct GoodsDetailPage {
       this.vm.updateTopBarAlpha(scrollOffset);
     }
   }
+
 
   /**
    * 跳转商品评论列表

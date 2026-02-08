@@ -2,6 +2,7 @@ import { BaseNetWorkUiState } from "base";
 import {
   ColumnStart,
   P100,
+  P80,
   RowSpaceBetweenCenter,
   RowStartCenter,
   SpaceHorizontalSmall,
@@ -11,7 +12,14 @@ import { Cart } from "model";
 import { GoodsNavigator } from "navigation";
 import { getWindowSafeAreaState, WindowSafeAreaState } from "state";
 import {
-  AddressCard, AppNavDestination, BaseNetWorkView, Card, OrderGoodsCard, TitleWithLine
+  AddressCard,
+  AppNavDestination,
+  BaseNetWorkView,
+  Card,
+  CouponCardMode,
+  CouponModal,
+  OrderGoodsCard,
+  TitleWithLine
 } from "ui";
 import { IBestButton, IBestCell, IBestCellGroup, IBestField, IBestPrice } from "ibestui";
 import OrderConfirmViewModel from "../viewmodel/OrderConfirmViewModel";
@@ -48,6 +56,17 @@ export struct OrderConfirmPage {
       }
     }) {
       this.PageContent();
+
+      CouponModal({
+        visible: this.vm.couponModalVisible,
+        title: $r("app.string.select_coupon"),
+        mode: CouponCardMode.SELECT,
+        currentPrice: this.vm.originalPrice,
+        selectedCouponId: this.vm.selectedCoupon?.id ?? 0,
+        coupons: this.vm.data?.userCoupon ?? [],
+        onDismiss: (): void => this.vm.hideCouponModal(),
+        onCouponAction: (couponId: number): void => this.vm.onCouponAction(couponId)
+      });
     }
   }
 
@@ -152,7 +171,9 @@ export struct OrderConfirmPage {
         IBestCell({
           title: $r("app.string.coupon"),
           leftIcon: $r("app.media.ic_coupon"),
-          value: this.vm.selectedCoupon?.title ?? $r("app.string.coupon_select"),
+          value: !this.vm.selectedCoupon?.title ? $r("app.string.coupon_select") : "",
+          label: this.vm.selectedCoupon?.title ?? "",
+          leftContentWidth: P80,
           isLink: true,
           hasBorder: true,
           onCellClick: (): void => {
@@ -160,8 +181,8 @@ export struct OrderConfirmPage {
           }
         });
 
-        // 优惠券折扣（仅当有折扣时显示）
-        if (this.vm.discountAmount > 0) {
+        // 优惠券折扣（选择优惠券后显示）
+        if (this.vm.selectedCoupon !== null) {
           IBestCell({
             title: $r("app.string.coupon_discount"),
             leftIcon: $r("app.media.ic_refund"),

@@ -7,7 +7,15 @@ import HomeViewModel from "../viewmodel/HomeViewModel";
 import { Goods } from "model";
 import { GoodsNavigator } from "navigation";
 import { P100, SpaceVerticalSmall } from "designsystem";
-import { AppNavDestination, BaseNetWorkListView, GoodsGridItem, GoodsListItem, RefreshLayout, TitleWithLine } from "ui";
+import {
+  AppNavDestination,
+  BaseNetWorkListView,
+  CouponReceiveModal,
+  GoodsGridItem,
+  GoodsListItem,
+  RefreshLayout,
+  TitleWithLine
+} from "ui";
 import { bp } from "state";
 
 /**
@@ -30,7 +38,7 @@ export struct HomePage {
    * 构建首页
    * @returns {void} 无返回值
    */
-  build() {
+  build(): void {
     AppNavDestination({
       viewModel: this.vm,
       hideTitleBar: true,
@@ -43,6 +51,13 @@ export struct HomePage {
         onRetry: (): void => this.vm.retryRequest(),
         content: (): void => this.HomeContent()
       });
+
+      CouponReceiveModal({
+        visible: this.vm.couponModalVisible,
+        coupons: this.vm.pageData.coupon ?? [],
+        onDismiss: (): void => this.vm.hideCouponModal(),
+        onCouponAction: (couponId: number): void => this.vm.onCouponReceive(couponId)
+      });
     }
   }
 
@@ -51,12 +66,12 @@ export struct HomePage {
    * @returns {void} 无返回值
    */
   @Builder
-  private HomeContent() {
+  private HomeContent(): void {
     RefreshLayout({
       loading: this.vm.isLoading,
       isEnableSlideUp: this.vm.isEnableSlideUp,
       scroller: this.listScroller,
-      onRefresh: (direction): void => this.vm.onRefreshDirection(direction),
+      onRefresh: (direction: "pull" | "slideUp"): void => this.vm.onRefreshDirection(direction),
     }) {
       List({ space: 12, scroller: this.listScroller }) {
         ListItem() {
@@ -64,7 +79,10 @@ export struct HomePage {
         }
 
         ListItem() {
-          HomeCouponSection({ coupons: this.vm.pageData.coupon ?? [] });
+          HomeCouponSection({
+            coupons: this.vm.pageData.coupon ?? [],
+            onReceiveClick: (): void => this.vm.showCouponModal()
+          });
         }
 
         ListItem() {
@@ -124,11 +142,12 @@ export struct HomePage {
           .width(P100);
         }
 
-        SpaceVerticalSmall()
+        SpaceVerticalSmall();
 
       }
       .edgeEffect(EdgeEffect.None)
       .padding($r("app.float.space_padding_medium"));
     }
   }
+
 }

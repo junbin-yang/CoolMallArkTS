@@ -179,6 +179,10 @@
     {
       "name": "get_selected_goods_failed",
       "value": "获取选中商品失败"
+    },
+    {
+      "name": "coupon_receive_success",
+      "value": "领取成功"
     }
   ]
 }
